@@ -1,3 +1,6 @@
 #errortext{
     color: red;
 }
+#welcome-box{
+    display: none;
+}
