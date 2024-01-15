@@ -98,7 +98,7 @@ async function processMenuData() {
     console.log(fetchedBrowardData)
   } catch (error) {
     console.log(error);
-    errortext.innerHTML = error.message // Handle any errors that occurred during fetching
+    errortext.innerHTML = 'Error with the UF dining servers:'+error.message // Handle any errors that occurred during fetching
   }
 }
 
@@ -112,24 +112,39 @@ function UserDataExists() {
 if(!UserDataExists()){
   console.log('-')
   document.getElementById('welcome-box').style.display = 'flex'
+  document.getElementById('welcome-container').style.display = 'flex'
   document.getElementById("welcome-submit").addEventListener('click',function(){ 
     user_name = document.getElementById('name').value
     user_calorie = document.getElementById('calorie').value
     user_protein = document.getElementById('protein').value
-    document.getElementById('welcome-box').style.display = 'none'
-    user_data ={
-      name: user_name,
-      calorie: user_calorie,
-      protein: user_protein
+    
+    if(user_name==='' || user_name===' '){
+      alert('Please fill out your first name')
     }
-    saveToLocalStorage('user-data', user_data)
+    else if(user_calorie>4000 || user_calorie<500){
+      alert('Calorie goal must be between 4000 and 500')
+    }
+    else if(user_protein>250 || user_protein<10){
+      alert('Protein goal must be between 250g and 10g')
+    }
+    else{
+      document.getElementById('welcome-box').style.display = 'none'
+      document.getElementById('welcome-container').style.display = 'none'
+      user_data ={
+        name: user_name,
+        calorie: user_calorie,
+        protein: user_protein
+      }
+      saveToLocalStorage('user-data', user_data)
+
+    }
+    
 
   })
 
 }
 else{
   user_data = getFromLocalStorage('user-data')
-  console.log(user_data)
 
 
 }

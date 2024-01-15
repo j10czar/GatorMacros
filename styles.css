@@ -1,6 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+
+html{
+    scroll-behavior: smooth;
+    font-family: 'Quicksand', sans-serif;
+    background-color: #1B1D27;
+    overflow-x: hidden;
+    color: aliceblue;
+    overflow-y: hidden;
+
+
+
+}
+input{
+    color: aliceblue;
+    background-color: #252835;
+    border-radius: 6px;
+    margin-left: 5px;
+    border-style: none;
+    font-family: 'Quicksand', sans-serif;
+    transition: 0.3s ease-out;
+    
+}
+input:focus{
+    border-color: #3C8AFF;
+    border-width: 2px;
+    border-radius: 8px;
+}
+.button-1{
+    background-color: #3C8AFF;
+    border-style: none;
+    font-family: 'Quicksand', sans-serif;
+    color: aliceblue;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 0.3s ease-out;
+}
+.button-1:hover{
+    background-color: aliceblue;
+    border-radius: 20px;
+    color: #3C8AFF;
+}
 #errortext{
     color: red;
 }
 #welcome-box{
     display: none;
+}
+#header{
+    background: #252835;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+    height: 100px;
+    padding: 0px;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: -25px;
+    width: 101vw;
+
+}
+
+#gm-logo{
+    height: 75px;
+    margin-left: 20px;
+    margin-top: 22px;
+}
+
+#welcome-box{
+    background-color: #12131bc3;
+    width: 350px;
+    height: 250px;
+    border-radius: 7px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.3s ease-out;
+}
+
+.model-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#welcome-container{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s ease-out;
 }
