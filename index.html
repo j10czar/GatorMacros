@@ -10,7 +10,6 @@
     <div id="header">
         <img src="./resources/gm-logo.png" alt="gatormacros" id="gm-logo">
     </div>
-    
     <h3 id="errortext"></h3>
     <div id="welcome-container">
         <div id="welcome-box">
@@ -31,7 +30,7 @@
                 <input type="number" id="protein" name="protein">
                 </div>
                 <br>
-                <div class="model-item">
+                <div class="model-item" id="modal-btn-container">
                 <button type="button" id="welcome-submit" class="button-1">Get Started</button>
                 </div>
 
@@ -47,6 +46,33 @@
         <p id="calorie-display">Calorie goal:</p>
         <button class="button-2" id="change-goal">Change Goals</button>
     
+    </div>
+
+    <div id="meal-container">
+        <div id="breakfast" class="meal-panel">
+            <h2>Breakfast</h2>
+            <div class="dining-select">
+                <h4>Select Dining Hall:</h4>
+            </div>
+            
+        </div>
+
+        <div id="lunch" class="meal-panel">
+            <h2>Lunch</h2>
+            <div class="dining-select">
+                <h4>Select Dining Hall:</h4>
+            </div>
+            
+        </div>
+
+        <div id="dinner" class="meal-panel">
+            <h2>Dinner</h2>
+            <div class="dining-select">
+                <h4>Select Dining Hall:</h4>
+            </div>
+            
+        </div>
+
     </div>
 
     <script src="index.js"></script>

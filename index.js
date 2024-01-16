@@ -150,7 +150,7 @@ function UserDataExists() {
 
 
 
-function spawnModal(title){
+function spawnWelcomeModal(title){
   document.getElementById('welcome-box').style.display = 'flex'
   document.getElementById('welcome-container').style.display = 'flex'
   document.getElementById('modal-title').innerHTML = title
@@ -187,6 +187,56 @@ function spawnModal(title){
 }
 
 
+function spawnChangeModal(title){
+  document.getElementById('welcome-box').style.display = 'flex'
+  document.getElementById('welcome-container').style.display = 'flex'
+  document.getElementById('modal-title').innerHTML = title
+  document.getElementById('welcome-submit').innerHTML = "Change"
+  var closeBtn = document.createElement('button')
+  closeBtn.innerHTML="Close"
+  document.getElementById('modal-btn-container').appendChild(closeBtn)
+  closeBtn.addEventListener('click', function(){
+    document.getElementById('welcome-box').style.display = 'none'
+    document.getElementById('welcome-container').style.display = 'none'
+
+  })
+
+
+
+  document.getElementById("welcome-submit").addEventListener('click',function(){ 
+    user_name = document.getElementById('name').value
+    user_calorie = document.getElementById('calorie').value
+    user_protein = document.getElementById('protein').value
+    
+    if(user_name==='' || user_name===' '){
+      alert('Please fill out your first name')
+    }
+    else if(user_calorie>4000 || user_calorie<500){
+      alert('Calorie goal must be between 4000 and 500')
+    }
+    else if(user_protein>250 || user_protein<10){
+      alert('Protein goal must be between 250g and 10g')
+    }
+    else{
+      document.getElementById('welcome-box').style.display = 'none'
+      document.getElementById('welcome-container').style.display = 'none'
+      user_data ={
+        name: user_name,
+        calorie: user_calorie,
+        protein: user_protein
+      }
+      saveToLocalStorage('user-data', user_data)
+      loadInfoPanel()
+
+    }
+    
+
+  })
+
+
+
+}
+
 
 
 
@@ -207,7 +257,7 @@ function loadInfoPanel(){
     document.getElementById('protein-display').innerHTML = "Protein goal: "+user_data.protein+'g'
     document.getElementById('calorie-display').innerHTML = "Calorie goal: "+user_data.calorie
     document.getElementById('change-goal').addEventListener('click',function(){
-      spawnModal("Change Goals")
+      spawnChangeModal("Change Goals")
     })
 
 }
@@ -218,7 +268,7 @@ function loadInfoPanel(){
 //------------ Define Functions Above this line-----------
 
 if(!UserDataExists()){
-  spawnModal("Welcome to GatorMacros!")
+  spawnWelcomeModal("Welcome to GatorMacros!")
 }
 else{
   user_data = getFromLocalStorage('user-data')
