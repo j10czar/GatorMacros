@@ -6,6 +6,11 @@ let meal = 'dinner'
   var user_data = {}
 const errortext = document.getElementById('errortext')
 
+
+
+
+
+
 function getTodayDate() {
     const today = new Date();
   
@@ -16,14 +21,27 @@ function getTodayDate() {
     return `${year}-${month}-${day}`;
   }
 
+
+
+
+
 function saveToLocalStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
+
+
+
 
 function getFromLocalStorage(key) {
   var storedData = localStorage.getItem(key);
   return JSON.parse(storedData);
 }
+
+
+
+
+
+
 
 //gator corner id: 62a8c2b8a9f13a0de3af64c4
 //breakfast: 659adab6c625af072a83c89a
@@ -56,6 +74,11 @@ async function fetchCornerData() {
   }
 }
 
+
+
+
+
+
 async function fetchBrowardData() {
   try {
     const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccd7?platform=0&date='+getTodayDate());
@@ -74,6 +97,12 @@ async function fetchBrowardData() {
     throw new Error(error);
   }
 }
+
+
+
+
+
+
 //V is corresponding meal number in fetchedMenu data array
 //breakfast 0
 //lunch 1
@@ -87,8 +116,14 @@ function sortRawData(menuData,v){
     }
   }
 
+
   return sortedMenu
 }
+
+
+
+
+
 
 async function processMenuData() {
   try {
@@ -102,6 +137,9 @@ async function processMenuData() {
   }
 }
 
+
+
+
 function UserDataExists() {
   var userData = getFromLocalStorage('user-data');
 
@@ -109,10 +147,13 @@ function UserDataExists() {
   return userData !== null && userData !== undefined;
 }
 
-if(!UserDataExists()){
-  console.log('-')
+
+
+
+function spawnModal(title){
   document.getElementById('welcome-box').style.display = 'flex'
   document.getElementById('welcome-container').style.display = 'flex'
+  document.getElementById('modal-title').innerHTML = title
   document.getElementById("welcome-submit").addEventListener('click',function(){ 
     user_name = document.getElementById('name').value
     user_calorie = document.getElementById('calorie').value
@@ -136,6 +177,7 @@ if(!UserDataExists()){
         protein: user_protein
       }
       saveToLocalStorage('user-data', user_data)
+      loadInfoPanel()
 
     }
     
@@ -143,12 +185,48 @@ if(!UserDataExists()){
   })
 
 }
-else{
-  user_data = getFromLocalStorage('user-data')
 
+
+
+
+
+function loadInfoPanel(){
+  var timeOfDay = 'day'
+    const now = new Date();
+    const hour = now.getHours();
+
+    if (hour >= 5 && hour < 12) {
+      timeOfDay="morning"
+    } else if (hour >= 12 && hour < 18) {
+      timeOfDay="afternoon"
+    } else {
+      timeOfDay="evening"
+    }
+
+    document.getElementById('greeting').innerHTML= "Good "+timeOfDay+" "+user_data.name+"!"
+    document.getElementById('protein-display').innerHTML = "Protein goal: "+user_data.protein+'g'
+    document.getElementById('calorie-display').innerHTML = "Calorie goal: "+user_data.calorie
+    document.getElementById('change-goal').addEventListener('click',function(){
+      spawnModal("Change Goals")
+    })
 
 }
 
+
+
+
+//------------ Define Functions Above this line-----------
+
+if(!UserDataExists()){
+  spawnModal("Welcome to GatorMacros!")
+}
+else{
+  user_data = getFromLocalStorage('user-data')
+  loadInfoPanel()
+
+
+}
+    
 
 
 
