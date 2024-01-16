@@ -158,23 +158,3 @@ button:hover{
     text-align: center;
 }
 
-/* animation keyframes */
-
-@keyframes fadeIn{
-    0% {opacity: 0%;}
-    100% {opacity: 100%;}
-}
-
-.fadeInD{
-    animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeOut {
-    0% {opacity: 100%;}
-    100% {opacity: 0%;}
-    
-}
-
-.fadeOutD{
-    animation: fadeOut 0.2s ease-out;
-}
