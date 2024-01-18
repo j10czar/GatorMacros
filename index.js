@@ -24,21 +24,15 @@ function getTodayDate() {
 
 
 
-
 function saveToLocalStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
-
-
 
 
 function getFromLocalStorage(key) {
   var storedData = localStorage.getItem(key);
   return JSON.parse(storedData);
 }
-
-
-
 
 
 
@@ -53,7 +47,8 @@ function getFromLocalStorage(key) {
 //lunch: 6592d781e45d4306eff8ccde
 //dinner: 6592d781e45d4306eff8ccd7
 //---------
-//cravings has static menu
+//raquet: 64ccfa71c625af067ed9fd67
+
 
 async function fetchCornerData() {
   try {
@@ -98,6 +93,20 @@ async function fetchBrowardData() {
   }
 }
 
+async function fetchRaquetData() {
+  try {
+    const raquetResponse = await fetch('https://api.dineoncampus.com/v1/location/64ccfa71c625af067ed9fd67/periods?platform=0&date='+getTodayDate());
+
+    const raquetJSON = await raquetResponse.json();
+    const raquetData = raquetJSON['menu']['periods']['categories'];
+    const menuData = [raquetData]
+    return menuData;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+
 
 
 
@@ -107,6 +116,8 @@ async function fetchBrowardData() {
 //breakfast 0
 //lunch 1
 //dinner 2
+
+//raquet is 0 by default
 function sortRawData(menuData,v){
   let sortedMenu = {}
   for(let i = 0;i<menuData[v].length; i++){
@@ -123,14 +134,17 @@ function sortRawData(menuData,v){
 
 
 
-
-
+//for testing purposes
 async function processMenuData() {
   try {
     const fetchedCornerData = await fetchCornerData();
-    const fetchedBrowardData = await fetchBrowardData('broward');
+    const fetchedBrowardData = await fetchBrowardData();
+    const fetchedRaquetData = await fetchRaquetData();
     console.log(fetchedCornerData)
     console.log(fetchedBrowardData)
+    console.log(fetchedRaquetData)
+    console.log(sortRawData(fetchedRaquetData,0))
+
   } catch (error) {
     console.log(error);
     errortext.innerHTML = 'Error with the UF dining servers:'+error.message // Handle any errors that occurred during fetching
@@ -282,5 +296,5 @@ else{
 
 
 
-// processMenuData()
+processMenuData()
  
