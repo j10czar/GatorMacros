@@ -135,13 +135,13 @@ function sortRawData(menuData,v){
 
 
 //for testing purposes
-async function processMenuData() {
+async function viewMenuData() {
   try {
     const fetchedCornerData = await fetchCornerData();
     const fetchedBrowardData = await fetchBrowardData();
     const fetchedRaquetData = await fetchRaquetData();
     console.log(fetchedCornerData)
-    console.log(fetchedBrowardData)
+    console.log(sortRawData(fetchedBrowardData,1))
     console.log(fetchedRaquetData)
     console.log(sortRawData(fetchedRaquetData,0))
 
@@ -277,6 +277,31 @@ function loadInfoPanel(){
 }
 
 
+//returns key of a menu item that is closest to the specified macro value
+function closestMacro(macro,number,menu){
+    let distance = Number.MAX_SAFE_INTEGER
+    let closestIndex = 0
+    let pc = 0
+    if(macro==='c'){
+      pc = 0
+    }
+    else{
+      pc = 1
+    }
+
+    for(var item in menu){
+
+      if((Math.abs(number-menu[item][pc]))<distance){
+        distance= Math.abs(number-menu[item][pc])
+        closestIndex = item
+
+      }
+    }
+
+    return closestIndex
+
+}
+
 
 
 //------------ Define Functions Above this line-----------
@@ -292,9 +317,27 @@ else{
 }
     
 
+async function fetchMenu() {
+  try {
+    const fetchedBrowardData = await fetchBrowardData();
+    const browardLunchMenu = sortRawData(fetchedBrowardData,1)
+    console.log(browardLunchMenu)
+    console.log(closestMacro('p',10,browardLunchMenu))
+    
+
+  } catch (error) {
+    console.log(error);
+    errortext.innerHTML = 'Error with the UF dining servers:'+error.message // Handle any errors that occurred during fetching
+  }
+}
 
 
 
 
-processMenuData()
+
+
+
+fetchMenu()
+
+// viewMenuData()
  
