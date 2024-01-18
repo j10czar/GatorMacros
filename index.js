@@ -317,17 +317,19 @@ else{
 }
     
 
-async function fetchMenu() {
+async function gatorMacros(){
   try {
     const fetchedBrowardData = await fetchBrowardData();
     const browardLunchMenu = sortRawData(fetchedBrowardData,1)
     console.log(browardLunchMenu)
     console.log(closestMacro('p',10,browardLunchMenu))
+
+    //keep testing here
     
 
   } catch (error) {
     console.log(error);
-    errortext.innerHTML = 'Error with the UF dining servers:'+error.message // Handle any errors that occurred during fetching
+    errortext.innerHTML = 'Application Error:'+error.message 
   }
 }
 
@@ -337,7 +339,7 @@ async function fetchMenu() {
 
 
 
-fetchMenu()
+gatorMacros()
 
 // viewMenuData()
  
