@@ -168,7 +168,8 @@ function spawnWelcomeModal(title){
   document.getElementById('welcome-box').style.display = 'flex'
   document.getElementById('welcome-container').style.display = 'flex'
   document.getElementById('modal-title').innerHTML = title
-  document.getElementById("welcome-submit").addEventListener('click',function(){ 
+  document.getElementById("welcome-submit").addEventListener('click',function(event){ 
+    event.preventDefault();
     user_name = document.getElementById('name').value
     user_calorie = document.getElementById('calorie').value
     user_protein = document.getElementById('protein').value
@@ -209,7 +210,8 @@ function spawnChangeModal(title){
   var closeBtn = document.createElement('button')
   closeBtn.innerHTML="Close"
   document.getElementById('modal-btn-container').appendChild(closeBtn)
-  closeBtn.addEventListener('click', function(){
+  closeBtn.addEventListener('click', function(event){
+    event.preventDefault();
     document.getElementById('welcome-box').style.display = 'none'
     document.getElementById('welcome-container').style.display = 'none'
 
@@ -217,7 +219,8 @@ function spawnChangeModal(title){
 
 
 
-  document.getElementById("welcome-submit").addEventListener('click',function(){ 
+  document.getElementById("welcome-submit").addEventListener('click',function(event){
+    event.preventDefault(); 
     user_name = document.getElementById('name').value
     user_calorie = document.getElementById('calorie').value
     user_protein = document.getElementById('protein').value
@@ -322,6 +325,13 @@ async function gatorMacros(){
     const fetchedCornerData = await fetchCornerData();
     const fetchedBrowardData = await fetchBrowardData();
     const fetchedRaquetData = await fetchRaquetData();
+    document.querySelectorAll('.load-container').forEach(element => {
+      element.style.display = 'none';
+  });
+  
+  document.querySelectorAll('.dining-select').forEach(element => {
+      element.style.display = 'inline';
+  });
     var breakfastMenu = {}
     var lunchMenu = {}
     var dinnerMenu = {}
