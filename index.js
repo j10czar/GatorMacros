@@ -319,12 +319,71 @@ else{
 
 async function gatorMacros(){
   try {
+    const fetchedCornerData = await fetchCornerData();
     const fetchedBrowardData = await fetchBrowardData();
-    const browardLunchMenu = sortRawData(fetchedBrowardData,1)
-    console.log(browardLunchMenu)
-    console.log(closestMacro('p',10,browardLunchMenu))
+    const fetchedRaquetData = await fetchRaquetData();
+    var breakfastMenu = {}
+    var lunchMenu = {}
+    var dinnerMenu = {}
 
-    //keep testing here
+
+    document.getElementById('breakfast-submit').addEventListener('click', function() {
+      var breakfastOption = document.getElementById('breakfast-dropdown').value;
+      console.log('Selected option for breakfast:', breakfastOption);
+      document.getElementById('breakfast-select').style.display = 'none'
+      if(breakfastOption==='corner'){
+        
+        breakfastMenu = sortRawData(fetchedCornerData,0)
+      }
+      else if(breakfastOption==='broward'){
+        breakfastMenu = sortRawData(fetchedBrowardData,0)
+      }
+      else{
+        breakfastMenu = sortRawData(fetchedRaquetData,0)
+      }
+
+      console.log(breakfastMenu)
+
+      
+      
+    });  
+    document.getElementById('lunch-submit').addEventListener('click', function() {
+      var lunchOption = document.getElementById('lunch-dropdown').value;
+      console.log('Selected option for lunch: ', lunchOption);
+      document.getElementById('lunch-select').style.display = 'none'
+      if(lunchOption==='corner'){
+        lunchMenu = sortRawData(fetchedCornerData,1)
+        
+      }
+      else if(lunchOption==='broward'){
+        lunchMenu = sortRawData(fetchedBrowardData,1)
+      }
+      else{
+        lunchMenu = sortRawData(fetchedRaquetData,0)
+      }
+      console.log(lunchMenu)
+    });
+    
+    document.getElementById('dinner-submit').addEventListener('click', function() {
+      var dinnerOption = document.getElementById('dinner-dropdown').value;
+      console.log('Selected option for dinner: ', dinnerOption);
+      document.getElementById('dinner-select').style.display = 'none'
+      if(dinnerOption==='corner'){
+        dinnerMenu = sortRawData(fetchedCornerData,2)
+        
+      }
+      else if(dinnerOption==='broward'){
+        dinnerMenu = sortRawData(fetchedBrowardData,2)
+      }
+      else{
+        dinnerMenu = sortRawData(fetchedRaquetData,0)
+      }
+      console.log(dinnerMenu)
+    });
+
+    
+
+
     
 
   } catch (error) {
