@@ -207,17 +207,25 @@ function spawnChangeModal(title){
   document.getElementById('welcome-container').style.display = 'flex'
   document.getElementById('modal-title').innerHTML = title
   document.getElementById('welcome-submit').innerHTML = "Change"
-  var closeBtn = document.createElement('button')
-  closeBtn.innerHTML="Close"
-  document.getElementById('modal-btn-container').appendChild(closeBtn)
-  closeBtn.addEventListener('click', function(event){
-    event.preventDefault();
-    document.getElementById('welcome-box').style.display = 'none'
-    document.getElementById('welcome-container').style.display = 'none'
+  
 
-  })
+  // Get the existing close button
+  var closeButton = document.querySelector('.close-button');
 
 
+  if (!closeButton) {
+      closeButton = document.createElement('button');
+      closeButton.className = 'close-button';
+      closeButton.textContent = 'Close';
+      document.getElementById('modal-btn-container').appendChild(closeButton)
+  }
+
+  closeButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      document.getElementById('welcome-box').style.display = 'none'
+      document.getElementById('welcome-container').style.display = 'none'
+
+  });
 
   document.getElementById("welcome-submit").addEventListener('click',function(event){
     event.preventDefault(); 
