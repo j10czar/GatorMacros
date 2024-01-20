@@ -217,6 +217,7 @@ function spawnChangeModal(title){
       closeButton = document.createElement('button');
       closeButton.className = 'close-button';
       closeButton.textContent = 'Close';
+
       document.getElementById('modal-btn-container').appendChild(closeButton)
   }
 
@@ -287,8 +288,14 @@ function loadInfoPanel(){
 
 }
 
-
-//returns key of a menu item that is closest to the specified macro value
+/**
+ * Finds the index of the menu item that has the closest macro to the target.
+ *
+ * @param {string} macro - The macro to consider ('p' for protein, 'c' for calories).
+ * @param {number} target - The target value for the macro.
+ * @param {Object} menu - The menu, represented as an object where each key is an item name and the value is an array [calories, protein].
+ * @returns {string} The key of the menu item that has the closest macro to the target.
+ */
 function closestMacro(macro,number,menu){
     let distance = Number.MAX_SAFE_INTEGER
     let closestIndex = 0
@@ -315,20 +322,72 @@ function closestMacro(macro,number,menu){
 
 
 
+function createMeal(menu, proteinGoal, calorieGoal) {
+  console.log(proteinGoal)
+  console.log(calorieGoal)
+  console.log(menu)
+  let runningProtein = 0;
+  let runningCalorie = 0;
+  let meal = {};
+  const vegetableArray = ['carrot', 'broccoli', 'spinach', 'tomato', 'cucumber', 'bell pepper', 'onion', 'lettuce', 'zucchini', 'potato', 'sweet potato', 'kale', 'cabbage', 'celery', 'eggplant', 'peas', 'asparagus', 'brussels sprouts', 'cauliflower', 'mushroom', 'green beans', 'pumpkin', 'butternut squash', 'turnip'];
+
+  // Sort the menu items by protein-to-calorie ratio in descending order
+  const sortedMenu = Object.entries(menu).sort((a, b) => (b[1][1] / b[1][0]) - (a[1][1] / a[1][0]));
+
+  // Loop through the sorted menu
+  for (let i = 0; i < sortedMenu.length; i++) {
+      const item = sortedMenu[i];
+
+      // If adding this item won't exceed the protein or calorie goal, add it to the meal
+      if (runningProtein + item[1][1] <= proteinGoal && runningCalorie + item[1][0] <= calorieGoal) {
+          meal[item[0]] = item[1];
+          runningProtein += item[1][1];
+          runningCalorie += item[1][0];
+      }
+
+      // If the protein or calorie goal has been reached, break the loop
+      if (runningProtein >= proteinGoal && runningCalorie >= calorieGoal) {
+          break;
+      }
+  }
+
+  // Ensure the meal includes at least one vegetable
+  for (let i = 0; i < vegetableArray.length; i++) {
+      if (meal.hasOwnProperty(vegetableArray[i])) {
+          return meal;
+      }
+  }
+
+  // If no vegetable is included in the meal, add the first vegetable from the vegetableArray that is in the menu
+  for (let i = 0; i < vegetableArray.length; i++) {
+      if (menu.hasOwnProperty(vegetableArray[i])) {
+          meal[vegetableArray[i]] = menu[vegetableArray[i]];
+          break;
+      }
+  }
+
+  return meal;
+}
+
 //------------ Define Functions Above this line-----------
 
-if(!UserDataExists()){
-  spawnWelcomeModal("Welcome to GatorMacros!")
-}
-else{
-  user_data = getFromLocalStorage('user-data')
-  loadInfoPanel()
 
-
-}
     
 
 async function gatorMacros(){
+  if(!UserDataExists()){
+    spawnWelcomeModal("Welcome to GatorMacros!")
+  }
+  else{
+    user_data = getFromLocalStorage('user-data')
+    loadInfoPanel()
+    userName = user_data.name
+    userCalorie = user_data.calorie
+    userProtein = user_data.protein
+  }
+
+
+
   try {
     const fetchedCornerData = await fetchCornerData();
     const fetchedBrowardData = await fetchBrowardData();
@@ -379,7 +438,7 @@ async function gatorMacros(){
       else{
         lunchMenu = sortRawData(fetchedRaquetData,0)
       }
-      console.log(lunchMenu)
+      console.log(createMeal(lunchMenu,userProtein/3,userCalorie/3))
     });
     
     document.getElementById('dinner-submit').addEventListener('click', function() {
@@ -418,5 +477,5 @@ async function gatorMacros(){
 
 gatorMacros()
 
-// viewMenuData()
+
  
