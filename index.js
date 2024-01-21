@@ -324,12 +324,12 @@ function closestMacro(macro,number,menu){
 
 function createMeal(menu, proteinGoal, calorieGoal) {
   console.log(proteinGoal)
-  console.log(calorieGoal)
-  console.log(menu)
   let runningProtein = 0;
   let runningCalorie = 0;
   let meal = {};
-  const vegetableArray = ['carrot', 'broccoli', 'spinach', 'tomato', 'cucumber', 'bell pepper', 'onion', 'lettuce', 'zucchini', 'potato', 'sweet potato', 'kale', 'cabbage', 'celery', 'eggplant', 'peas', 'asparagus', 'brussels sprouts', 'cauliflower', 'mushroom', 'green beans', 'pumpkin', 'butternut squash', 'turnip'];
+  let maxLowItems = 2;
+  let lowRatioCount = 0;
+  let minProteinToCalorieRatio = 0.03;
 
   // Sort the menu items by protein-to-calorie ratio in descending order
   const sortedMenu = Object.entries(menu).sort((a, b) => (b[1][1] / b[1][0]) - (a[1][1] / a[1][0]));
@@ -337,37 +337,63 @@ function createMeal(menu, proteinGoal, calorieGoal) {
   // Loop through the sorted menu
   for (let i = 0; i < sortedMenu.length; i++) {
       const item = sortedMenu[i];
+      console.log(item)
 
-      // If adding this item won't exceed the protein or calorie goal, add it to the meal
-      if (runningProtein + item[1][1] <= proteinGoal && runningCalorie + item[1][0] <= calorieGoal) {
-          meal[item[0]] = item[1];
-          runningProtein += item[1][1];
-          runningCalorie += item[1][0];
+      // If adding this item won't exceed the protein goal and the protein goal hasn't been met yet, add it to the meal
+      if ((runningProtein + item[1][1] <= proteinGoal*0.2 && runningProtein < proteinGoal*0.2)&&(!isNaN(item[1][1]) && !isNaN(item[1][0]))) {
+          if (item[1][1] / item[1][0] <= minProteinToCalorieRatio && lowRatioCount < maxLowItems
+           && (item[1][1] / item[1][0] != NaN) ) {
+            console.log('low ratio allowence')
+              lowRatioCount++;
+              meal[item[0]] = item[1];
+              runningProtein += item[1][1];
+              runningCalorie += item[1][0];
+          } else if ((item[1][1] / item[1][0] >= minProteinToCalorieRatio)) {
+              console.log('high ratio and not nan')
+              meal[item[0]] = item[1];
+              runningProtein += item[1][1];
+              runningCalorie += item[1][0];
+          }
       }
 
-      // If the protein or calorie goal has been reached, break the loop
+      // If adding this item won't exceed the calorie goal and the calorie goal hasn't been met yet, add it to the meal
+      if ((runningCalorie + item[1][0] <= calorieGoal && runningCalorie < calorieGoal)&&(!isNaN(item[1][1]) && !isNaN(item[1][0]))) {
+          if (!meal.hasOwnProperty(item[0]) ) { // Only add the item if it hasn't been added yet
+              console.log('high ratio and not nan calorie add')
+              meal[item[0]] = item[1];
+              runningCalorie += item[1][0];
+          }
+      }
+
+      // If both the protein and calorie goals have been met, break the loop
       if (runningProtein >= proteinGoal && runningCalorie >= calorieGoal) {
-          break;
-      }
-  }
-
-  // Ensure the meal includes at least one vegetable
-  for (let i = 0; i < vegetableArray.length; i++) {
-      if (meal.hasOwnProperty(vegetableArray[i])) {
-          return meal;
-      }
-  }
-
-  // If no vegetable is included in the meal, add the first vegetable from the vegetableArray that is in the menu
-  for (let i = 0; i < vegetableArray.length; i++) {
-      if (menu.hasOwnProperty(vegetableArray[i])) {
-          meal[vegetableArray[i]] = menu[vegetableArray[i]];
           break;
       }
   }
 
   return meal;
 }
+
+
+function calculateTotals(meal) {
+  let totalProtein = 0;
+  let totalCalories = 0;
+
+  // Loop through the meal object
+  for (let item in meal) {
+      // Add the protein and calorie values of each item to the totals
+      totalCalories += meal[item][0];
+      totalProtein += meal[item][1];
+  }
+
+  // Return an object with the total protein and calorie values
+  return {
+      totalProtein: totalProtein,
+      totalCalories: totalCalories
+  };
+}
+
+
 
 //------------ Define Functions Above this line-----------
 
@@ -406,7 +432,6 @@ async function gatorMacros(){
 
     document.getElementById('breakfast-submit').addEventListener('click', function() {
       var breakfastOption = document.getElementById('breakfast-dropdown').value;
-      console.log('Selected option for breakfast:', breakfastOption);
       document.getElementById('breakfast-select').style.display = 'none'
       if(breakfastOption==='corner'){
         
@@ -426,7 +451,6 @@ async function gatorMacros(){
     });  
     document.getElementById('lunch-submit').addEventListener('click', function() {
       var lunchOption = document.getElementById('lunch-dropdown').value;
-      console.log('Selected option for lunch: ', lunchOption);
       document.getElementById('lunch-select').style.display = 'none'
       if(lunchOption==='corner'){
         lunchMenu = sortRawData(fetchedCornerData,1)
@@ -438,12 +462,14 @@ async function gatorMacros(){
       else{
         lunchMenu = sortRawData(fetchedRaquetData,0)
       }
-      console.log(createMeal(lunchMenu,userProtein/3,userCalorie/3))
+
+      let test = createMeal(lunchMenu,userProtein/3,userCalorie/3)
+      console.log(test)
+      console.log(calculateTotals(test))
     });
     
     document.getElementById('dinner-submit').addEventListener('click', function() {
       var dinnerOption = document.getElementById('dinner-dropdown').value;
-      console.log('Selected option for dinner: ', dinnerOption);
       document.getElementById('dinner-select').style.display = 'none'
       if(dinnerOption==='corner'){
         dinnerMenu = sortRawData(fetchedCornerData,2)
@@ -476,6 +502,3 @@ async function gatorMacros(){
 
 
 gatorMacros()
-
-
- 
