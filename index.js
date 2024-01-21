@@ -122,8 +122,26 @@ function sortRawData(menuData,v){
   let sortedMenu = {}
   for(let i = 0;i<menuData[v].length; i++){
     for(let j = 0; j<menuData[v][i]['items'].length;j++){
-      sortedMenu[menuData[v][i]['items'][j]['name']] = [parseInt(menuData[v][i]['items'][j]['calories']),
-      parseInt(menuData[v][i]['items'][j]['nutrients'][1]['value'])]
+      let c = parseInt(menuData[v][i]['items'][j]['calories'])
+      let p = parseInt(menuData[v][i]['items'][j]['nutrients'][1]['value'])
+      let cRatio = c/p
+      let pRatio = p/c
+      let score = c+25*p
+      if(p===0 || isNaN(p)){
+        cRatio = c
+        pRatio = 0
+      }
+      if(isNaN(p)){
+        p = 0
+      }
+      sortedMenu[menuData[v][i]['items'][j]['name']] =
+      {
+        calories: c,
+        protein: p,
+        score: c+25*p,
+        cRatio: cRatio,
+        pRatio: pRatio
+      }
     }
   }
 
@@ -228,8 +246,7 @@ function spawnChangeModal(title){
 
   });
 
-  document.getElementById("welcome-submit").addEventListener('click',function(event){
-    event.preventDefault(); 
+  document.getElementById("welcome-submit").addEventListener('click',function(){
     user_name = document.getElementById('name').value
     user_calorie = document.getElementById('calorie').value
     user_protein = document.getElementById('protein').value
@@ -253,7 +270,7 @@ function spawnChangeModal(title){
       }
       saveToLocalStorage('user-data', user_data)
       loadInfoPanel()
-
+      location.reload()
     }
     
 
@@ -288,90 +305,125 @@ function loadInfoPanel(){
 
 }
 
+
+
+
 /**
- * Finds the index of the menu item that has the closest macro to the target.
- *
- * @param {string} macro - The macro to consider ('p' for protein, 'c' for calories).
- * @param {number} target - The target value for the macro.
- * @param {Object} menu - The menu, represented as an object where each key is an item name and the value is an array [calories, protein].
- * @returns {string} The key of the menu item that has the closest macro to the target.
+ * Creates a meal based on the given menu, protein goal, calorie goal, and dietary preferences.
+ * 
+ * @param {Object} menu - The menu containing the available food items and their nutritional values.
+ * @param {number} proteinGoal - The desired protein goal for the meal.
+ * @param {number} calorieGoal - The desired calorie goal for the meal.
+ * @param {boolean} isRegen - Indicates whether the meal should be randomly generated.
+ * @param {boolean} isVeggie - Indicates whether the meal should include veggies.
+ * @returns {Object} - The created meal with selected food items and their nutritional values.
  */
-function closestMacro(macro,number,menu){
-    let distance = Number.MAX_SAFE_INTEGER
-    let closestIndex = 0
-    let pc = 0
-    if(macro==='c'){
-      pc = 0
+function createMeal(menu, proteinGoal, calorieGoal, isRegen, isVeggie) {
+  let runningProtein = 0
+  let runningCalorie = 0
+  let meal = {}
+  let goalMet = ''
+
+  //create 3 arrays of the menu items sorted by score, cRatio, and pRatio in decenting order
+  let scoreArray = Object.entries(menu).map(([item, values]) => ({
+    item, 
+    calories: values.calories, 
+    protein: values.protein, 
+    score: values.score
+  }))
+  scoreArray.sort((a, b) => b.score - a.score)
+
+  let cRatioArray = Object.entries(menu).map(([item, values]) => ({
+    item, 
+    calories: values.calories, 
+    protein: values.protein, 
+    cRatio: values.cRatio
+  }))
+  cRatioArray.sort((a, b) => b.cRatio - a.cRatio)
+
+  let pRatioArray = Object.entries(menu).map(([item, values]) => ({
+    item, 
+    calories: values.calories, 
+    protein: values.protein, 
+    pRatio: values.pRatio
+  }))
+  pRatioArray.sort((a, b) => b.pRatio - a.pRatio)
+
+
+  //step 1: add the highest scoring items to the meal 
+  //check if either the protein or calorie goal has been met
+  for(let i = 0; i<scoreArray.length;i++){
+    if(runningProtein>=proteinGoal*0.8){
+      goalMet = 'protein'
+      break
     }
-    else{
-      pc = 1
+    else if(runningCalorie>=calorieGoal*0.8){
+      goalMet = 'calorie'
+      break
     }
-
-    for(var item in menu){
-
-      if((Math.abs(number-menu[item][pc]))<distance){
-        distance= Math.abs(number-menu[item][pc])
-        closestIndex = item
-
+    else if(runningCalorie+scoreArray[i].calories<=calorieGoal && runningProtein+scoreArray[i].protein<=proteinGoal){
+      runningProtein+=scoreArray[i].protein
+      runningCalorie+=scoreArray[i].calories
+      meal[scoreArray[i].item] = {
+        calories: scoreArray[i].calories,
+        protein: scoreArray[i].protein
       }
     }
-
-    return closestIndex
-
-}
-
-
-
-function createMeal(menu, proteinGoal, calorieGoal) {
-  console.log(proteinGoal)
-  let runningProtein = 0;
-  let runningCalorie = 0;
-  let meal = {};
-  let maxLowItems = 2;
-  let lowRatioCount = 0;
-  let minProteinToCalorieRatio = 0.03;
-
-  // Sort the menu items by protein-to-calorie ratio in descending order
-  const sortedMenu = Object.entries(menu).sort((a, b) => (b[1][1] / b[1][0]) - (a[1][1] / a[1][0]));
-
-  // Loop through the sorted menu
-  for (let i = 0; i < sortedMenu.length; i++) {
-      const item = sortedMenu[i];
-      console.log(item)
-
-      // If adding this item won't exceed the protein goal and the protein goal hasn't been met yet, add it to the meal
-      if ((runningProtein + item[1][1] <= proteinGoal*0.2 && runningProtein < proteinGoal*0.2)&&(!isNaN(item[1][1]) && !isNaN(item[1][0]))) {
-          if (item[1][1] / item[1][0] <= minProteinToCalorieRatio && lowRatioCount < maxLowItems
-           && (item[1][1] / item[1][0] != NaN) ) {
-            console.log('low ratio allowence')
-              lowRatioCount++;
-              meal[item[0]] = item[1];
-              runningProtein += item[1][1];
-              runningCalorie += item[1][0];
-          } else if ((item[1][1] / item[1][0] >= minProteinToCalorieRatio)) {
-              console.log('high ratio and not nan')
-              meal[item[0]] = item[1];
-              runningProtein += item[1][1];
-              runningCalorie += item[1][0];
-          }
-      }
-
-      // If adding this item won't exceed the calorie goal and the calorie goal hasn't been met yet, add it to the meal
-      if ((runningCalorie + item[1][0] <= calorieGoal && runningCalorie < calorieGoal)&&(!isNaN(item[1][1]) && !isNaN(item[1][0]))) {
-          if (!meal.hasOwnProperty(item[0]) ) { // Only add the item if it hasn't been added yet
-              console.log('high ratio and not nan calorie add')
-              meal[item[0]] = item[1];
-              runningCalorie += item[1][0];
-          }
-      }
-
-      // If both the protein and calorie goals have been met, break the loop
-      if (runningProtein >= proteinGoal && runningCalorie >= calorieGoal) {
-          break;
-      }
   }
 
-  return meal;
+  //step 2: based on the goal that was met, add the remaining items to the meal based on the cRatio or pRatio
+  if(goalMet==='protein'){
+    //fill in the remaining calories with the items that have the highest cRatio
+    for(let i = 0; i<cRatioArray.length;i++){
+      if(runningCalorie>=calorieGoal*0.95){
+        break
+      }
+      else if(runningCalorie+cRatioArray[i].calories<=calorieGoal){
+        runningCalorie+=cRatioArray[i].calories
+        meal[cRatioArray[i].item] = {
+          calories: cRatioArray[i].calories,
+          protein: cRatioArray[i].protein
+        }
+      }
+    }
+  }
+  else{
+    //fill in the remaining protein with the items that have the highest pRatio
+    for(let i = 0; i<pRatioArray.length;i++){
+      if(runningProtein>=proteinGoal*0.95){
+        break
+      }
+      else if(runningProtein+pRatioArray[i].protein<=proteinGoal){
+        runningProtein+=pRatioArray[i].protein
+        meal[pRatioArray[i].item] = {
+          calories: pRatioArray[i].calories,
+          protein: pRatioArray[i].protein
+        }
+      }
+    }
+  }
+
+
+  //includes veggies if the user wants them
+  if(isVeggie){
+    let veggies = ['broccoli','carrots','cauliflower','celery','cucumber','green beans','lettuce','mushrooms','onions','peppers','spinach','tomatoes']
+    outer: for(let i= 0; i<scoreArray.length;i++){
+      for(let j=0; j<veggies.length;j++){
+        if(scoreArray[i].item.toLowerCase().includes(veggies[j])){
+          meal[scoreArray[i].item] = {
+            calories: scoreArray[i].calories,
+            protein: scoreArray[i].protein
+          }
+          break outer
+        }
+      }
+    }  
+  }
+
+
+  return meal
+
+
 }
 
 
@@ -382,8 +434,8 @@ function calculateTotals(meal) {
   // Loop through the meal object
   for (let item in meal) {
       // Add the protein and calorie values of each item to the totals
-      totalCalories += meal[item][0];
-      totalProtein += meal[item][1];
+      totalCalories += meal[item]['calories'];
+      totalProtein += meal[item]['protein'];
   }
 
   // Return an object with the total protein and calorie values
@@ -444,7 +496,9 @@ async function gatorMacros(){
         breakfastMenu = sortRawData(fetchedRaquetData,0)
       }
 
-      console.log(breakfastMenu)
+      let test = createMeal(breakfastMenu,userProtein/3,userCalorie/3)
+      console.log(test)
+      console.log(calculateTotals(test))
 
       
       
@@ -463,7 +517,7 @@ async function gatorMacros(){
         lunchMenu = sortRawData(fetchedRaquetData,0)
       }
 
-      let test = createMeal(lunchMenu,userProtein/3,userCalorie/3)
+      let test = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,true)
       console.log(test)
       console.log(calculateTotals(test))
     });
@@ -481,7 +535,9 @@ async function gatorMacros(){
       else{
         dinnerMenu = sortRawData(fetchedRaquetData,0)
       }
-      console.log(dinnerMenu)
+      let test = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,true)
+      console.log(test)
+      console.log(calculateTotals(test))
     });
 
     
