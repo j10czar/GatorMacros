@@ -207,7 +207,9 @@ function spawnWelcomeModal(title){
       user_data ={
         name: user_name,
         calorie: user_calorie,
-        protein: user_protein
+        protein: user_protein,
+        dislikedFoods: [],
+        veggies: true
       }
       saveToLocalStorage('user-data', user_data)
       loadInfoPanel()
@@ -263,11 +265,10 @@ function spawnChangeModal(title){
     else{
       document.getElementById('welcome-box').style.display = 'none'
       document.getElementById('welcome-container').style.display = 'none'
-      user_data ={
-        name: user_name,
-        calorie: user_calorie,
-        protein: user_protein
-      }
+      let user_data = getFromLocalStorage('user-data')
+      user_data.name = user_name
+      user_data.calorie = user_calorie
+      user_data.protein = user_protein
       saveToLocalStorage('user-data', user_data)
       loadInfoPanel()
       location.reload()
