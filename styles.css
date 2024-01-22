@@ -6,8 +6,8 @@ html{
     font-family: 'Quicksand', sans-serif;
     background-color: #1B1D27;
     overflow-x: hidden;
-    color: aliceblue;
     overflow-y: hidden;
+    color: aliceblue;
 
 
 
@@ -61,6 +61,8 @@ select:hover{
     background-color: #383e48;
 
 }
+
+
 
 .load-container{
     display: flex;
@@ -169,8 +171,16 @@ select:hover{
 
 #info-panel{
     margin-left: 18px;
+    width: fit-content;
 }
 
+#info-panel > h1{
+  width: fit-content;
+  margin-top: 0px;
+}
+#info-panel > p {
+  width: fit-content;
+}
 #meal-container{
     display: flex;
 
@@ -191,6 +201,26 @@ select:hover{
     margin-top: 0px;
 }
 
+
+
+#menu-info{
+    justify-content: center;
+    align-items: center;
+    background-color: #383e48;
+    border-color: #FF8E3C;
+    color: #FF8E3C;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    padding: 10px;
+    width: fit-content;
+    font-weight: 700;
+    display: none;
+    height: fit-content;
+    margin-top: 5px;
+    margin-right: 10px;
+
+}
 
 
 .lds-ellipsis {
@@ -248,4 +278,22 @@ select:hover{
     100% {
       transform: translate(24px, 0);
     }
+  }
+
+
+  #top-container{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #right-panel{
+    display: flex;
+    margin-right: 20px;
+    justify-content: end;
+  }
+
+  #settings-icon{
+    width: 50px;
+    height: 50px;
+
   }

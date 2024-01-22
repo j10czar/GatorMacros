@@ -447,6 +447,21 @@ function calculateTotals(meal) {
 }
 
 
+function openSettings(){
+  console.log('settings')
+}
+
+function removeOption(id,option){
+    let selectElement = document.getElementById(id);
+      let options = selectElement.options;
+
+    for (let i = options.length - 1; i >= 0; i--) {
+        if (options[i].value ===  option) { // replace with the value of the option you want to remove
+            selectElement.remove(i);
+        }
+    }
+
+}
 
 //------------ Define Functions Above this line-----------
 
@@ -468,9 +483,34 @@ async function gatorMacros(){
 
 
   try {
-    const fetchedCornerData = await fetchCornerData();
-    const fetchedBrowardData = await fetchBrowardData();
-    const fetchedRaquetData = await fetchRaquetData();
+    try{
+      const fetchedCornerData = await fetchCornerData();
+
+    }catch(error){
+      removeOption('breakfast-dropdown','corner')
+      removeOption('lunch-dropdown','corner')
+      removeOption('dinner-dropdown','corner')
+      document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
+      document.getElementById('menu-info').style.display = 'flex'
+    }
+    try{
+      const fetchedBrowardData = await fetchBrowardData();
+    }catch(error){
+      removeOption('breakfast-dropdown','broward')
+      removeOption('lunch-dropdown','broward')
+      removeOption('dinner-dropdown','broward')
+      document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+      document.getElementById('menu-info').style.display = 'flex'
+    }
+    try{
+      const fetchedRaquetData = await fetchRaquetData();
+    }
+    catch(error){
+      removeOption('lunch-dropdown','raquet')
+      removeOption('dinner-dropdown','raquet')
+      document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
+      document.getElementById('menu-info').style.display = 'flex'
+    }
     document.querySelectorAll('.load-container').forEach(element => {
       element.style.display = 'none';
   });
