@@ -72,6 +72,15 @@ hr{
   border-radius: 1px;
 }
 
+#vegetables-included{
+  width: 25px;
+  height: 25px;
+  background-color: #383e48;
+  color: #252835;
+  border-radius: 5px;
+
+}
+
 
 
 .load-container{
@@ -156,17 +165,42 @@ hr{
     z-index: 100;
 }
 
+#settings-box{
+    background-color: #12131b;
+    width: 350px;
+    height: 350px;
+    border-radius: 7px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+    display: none;
+    flex-direction: column;
+    transition: 0.3s ease-out;
+    z-index: 100;
+    text-align: center;
+    justify-content: space-between;
+
+}
+#settings-errors{
+
+    color: #FF8E3C;
+    font-weight: 700;
+
+
+}
+
 .model-item{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+#modal-btn-container{
+  margin-bottom: 10px;
 }
 
 #modal-btn-container > button{
     margin: 10px;
 }
 
-#welcome-container{
+#modal-container{
     display: none;
     position: fixed;
     top: 0;

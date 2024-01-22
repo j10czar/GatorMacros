@@ -184,7 +184,7 @@ function UserDataExists() {
 
 function spawnWelcomeModal(title){
   document.getElementById('welcome-box').style.display = 'flex'
-  document.getElementById('welcome-container').style.display = 'flex'
+  document.getElementById('modal-container').style.display = 'flex'
   document.getElementById('modal-title').innerHTML = title
   document.getElementById("welcome-submit").addEventListener('click',function(event){ 
     event.preventDefault();
@@ -203,7 +203,7 @@ function spawnWelcomeModal(title){
     }
     else{
       document.getElementById('welcome-box').style.display = 'none'
-      document.getElementById('welcome-container').style.display = 'none'
+      document.getElementById('modal-container').style.display = 'none'
       user_data ={
         name: user_name,
         calorie: user_calorie,
@@ -222,64 +222,6 @@ function spawnWelcomeModal(title){
 }
 
 
-function spawnChangeModal(title){
-  document.getElementById('welcome-box').style.display = 'flex'
-  document.getElementById('welcome-container').style.display = 'flex'
-  document.getElementById('modal-title').innerHTML = title
-  document.getElementById('welcome-submit').innerHTML = "Change"
-  
-
-  // Get the existing close button
-  var closeButton = document.querySelector('.close-button');
-
-
-  if (!closeButton) {
-      closeButton = document.createElement('button');
-      closeButton.className = 'close-button';
-      closeButton.textContent = 'Close';
-
-      document.getElementById('modal-btn-container').appendChild(closeButton)
-  }
-
-  closeButton.addEventListener('click', function(event) {
-      event.preventDefault();
-      document.getElementById('welcome-box').style.display = 'none'
-      document.getElementById('welcome-container').style.display = 'none'
-
-  });
-
-  document.getElementById("welcome-submit").addEventListener('click',function(){
-    user_name = document.getElementById('name').value
-    user_calorie = document.getElementById('calorie').value
-    user_protein = document.getElementById('protein').value
-    
-    if(user_name==='' || user_name===' '){
-      alert('Please fill out your first name')
-    }
-    else if(user_calorie>4000 || user_calorie<500){
-      alert('Calorie goal must be between 4000 and 500')
-    }
-    else if(user_protein>250 || user_protein<10){
-      alert('Protein goal must be between 250g and 10g')
-    }
-    else{
-      document.getElementById('welcome-box').style.display = 'none'
-      document.getElementById('welcome-container').style.display = 'none'
-      let user_data = getFromLocalStorage('user-data')
-      user_data.name = user_name
-      user_data.calorie = user_calorie
-      user_data.protein = user_protein
-      saveToLocalStorage('user-data', user_data)
-      loadInfoPanel()
-      location.reload()
-    }
-    
-
-  })
-
-
-
-}
 
 
 
@@ -300,10 +242,6 @@ function loadInfoPanel(){
     document.getElementById('greeting').innerHTML= "Good "+timeOfDay+" "+user_data.name+"!"
     document.getElementById('protein-display').innerHTML = "Protein goal: "+user_data.protein+'g'
     document.getElementById('calorie-display').innerHTML = "Calorie goal: "+user_data.calorie
-    document.getElementById('change-goal').addEventListener('click',function(){
-      spawnChangeModal("Change Goals")
-    })
-
 }
 
 
@@ -447,8 +385,82 @@ function calculateTotals(meal) {
 }
 
 
+
 function openSettings(){
-  console.log('settings')
+  let user_data = getFromLocalStorage('user-data')
+  document.getElementById('settings-box').style.display = 'flex'
+  document.getElementById('modal-container').style.display = 'flex'
+
+  if(user_data.veggies){
+    document.getElementById('vegetables-included').checked = true
+  }
+  
+
+
+  var closeButton = document.querySelector('.close-button');
+
+
+  closeButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      document.getElementById('settings-box').style.display = 'none'
+      document.getElementById('modal-container').style.display = 'none'
+      document.getElementById('settings-errors').innerHTML = ''
+
+  });
+
+  document.getElementById("settings-submit").addEventListener('click',function(){
+    let allowed = false
+    user_name = document.getElementById('settings-name').value
+    user_calorie = document.getElementById('settings-calorie').value
+    user_protein = document.getElementById('settings-protein').value
+    user_veggies = document.getElementById('vegetables-included').checked
+
+
+    console.log(user_name)
+
+    if(user_data.veggies!=user_veggies){
+      allowed = true
+    }
+    
+    if(user_name != '' && user_name != null){
+      user_data.name = user_name
+      allowed = true
+    }
+    if(user_calorie != '' && user_calorie != null){
+      if((user_calorie>4000 || user_calorie<500)){
+        document.getElementById('settings-errors').innerHTML = 'Calorie goal must be between 4000 and 500'
+      }
+      else{
+        user_data.calorie = user_calorie
+        allowed = true
+      }
+    }
+    if(user_protein != ''&& user_protein != null){
+      if(user_protein>250 || user_protein<10){
+        document.getElementById('settings-errors').innerHTML = 'Protein goal must be between 250g and 10g'
+      }
+      else{
+        user_data.protein = user_protein
+        allowed = true
+      }
+    }
+
+    if(allowed){
+      document.getElementById('settings-box').style.display = 'none'
+      document.getElementById('modal-container').style.display = 'none'
+      document.getElementById('settings-errors').innerHTML = ''
+      user_data.veggies = user_veggies
+      saveToLocalStorage('user-data', user_data)
+      loadInfoPanel()
+      location.reload()
+    }
+    else{
+      document.getElementById('settings-errors').innerHTML = 'No changes were made.'
+    }
+    
+
+  })
+
 }
 
 function removeOption(id,option){
@@ -602,7 +614,7 @@ async function gatorMacros(){
       let meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
       console.log(meal)
 
-      
+
       let ul = document.getElementById('dinner-menu');
       for (let key in meal) {
           let li = document.createElement('li');
