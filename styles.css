@@ -62,6 +62,16 @@ select:hover{
 
 }
 
+hr{
+  border: none;
+  border-top: 1px solid aliceblue; 
+  color: aliceblue;
+  background-color: aliceblue;
+  height: 1px;
+  width: 80%;
+  border-radius: 1px;
+}
+
 
 
 .load-container{
@@ -296,4 +306,28 @@ select:hover{
     width: 50px;
     height: 50px;
 
+  }
+
+  .output-container{
+    display: none;
+    flex-direction: column;
+  }
+ 
+  .menu-container{
+    display: flex;
+    height: 240px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    
+  }
+
+  .total-container > h4{
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .total-container > p{
+    margin: 5px;
   }

@@ -478,14 +478,19 @@ async function gatorMacros(){
     userName = user_data.name
     userCalorie = user_data.calorie
     userProtein = user_data.protein
+    userVeggies = user_data.veggies
   }
 
 
 
   try {
-    try{
-      const fetchedCornerData = await fetchCornerData();
 
+    let fetchedCornerData;
+    let fetchedBrowardData;
+    let fetchedRaquetData;
+    
+    try{
+      fetchedCornerData = await fetchCornerData();
     }catch(error){
       removeOption('breakfast-dropdown','corner')
       removeOption('lunch-dropdown','corner')
@@ -494,7 +499,7 @@ async function gatorMacros(){
       document.getElementById('menu-info').style.display = 'flex'
     }
     try{
-      const fetchedBrowardData = await fetchBrowardData();
+      fetchedBrowardData = await fetchBrowardData();
     }catch(error){
       removeOption('breakfast-dropdown','broward')
       removeOption('lunch-dropdown','broward')
@@ -503,7 +508,7 @@ async function gatorMacros(){
       document.getElementById('menu-info').style.display = 'flex'
     }
     try{
-      const fetchedRaquetData = await fetchRaquetData();
+      fetchedRaquetData = await fetchRaquetData();
     }
     catch(error){
       removeOption('lunch-dropdown','raquet')
@@ -526,20 +531,16 @@ async function gatorMacros(){
     document.getElementById('breakfast-submit').addEventListener('click', function() {
       var breakfastOption = document.getElementById('breakfast-dropdown').value;
       document.getElementById('breakfast-select').style.display = 'none'
-      if(breakfastOption==='corner'){
-        
-        breakfastMenu = sortRawData(fetchedCornerData,0)
-      }
-      else if(breakfastOption==='broward'){
+      if(breakfastOption==='broward'){
         breakfastMenu = sortRawData(fetchedBrowardData,0)
       }
       else{
-        breakfastMenu = sortRawData(fetchedRaquetData,0)
+        breakfastMenu = sortRawData(fetchedCornerData,0)
       }
+      let meal = createMeal(breakfastMenu,userProtein/3,userCalorie/3,false,userVeggies)
+      console.log(meal)
+      document.getElementById('breakfast-output').style.display = 'flex'
 
-      let test = createMeal(breakfastMenu,userProtein/3,userCalorie/3)
-      console.log(test)
-      console.log(calculateTotals(test))
 
       
       
@@ -557,10 +558,9 @@ async function gatorMacros(){
       else{
         lunchMenu = sortRawData(fetchedRaquetData,0)
       }
+      let meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
+      console.log(meal)
 
-      let test = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,true)
-      console.log(test)
-      console.log(calculateTotals(test))
     });
     
     document.getElementById('dinner-submit').addEventListener('click', function() {
@@ -576,9 +576,8 @@ async function gatorMacros(){
       else{
         dinnerMenu = sortRawData(fetchedRaquetData,0)
       }
-      let test = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,true)
-      console.log(test)
-      console.log(calculateTotals(test))
+      let meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
+      console.log(meal)
     });
 
     
