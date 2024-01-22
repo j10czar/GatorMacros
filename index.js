@@ -537,9 +537,21 @@ async function gatorMacros(){
       else{
         breakfastMenu = sortRawData(fetchedCornerData,0)
       }
+
+
       let meal = createMeal(breakfastMenu,userProtein/3,userCalorie/3,false,userVeggies)
       console.log(meal)
+
+
+      let ul = document.getElementById('breakfast-menu');
+      for (let key in meal) {
+          let li = document.createElement('li');
+          li.textContent = key;
+          ul.appendChild(li);
+      }
       document.getElementById('breakfast-output').style.display = 'flex'
+      document.getElementById('breakfast-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
+      document.getElementById('breakfast-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
 
 
       
@@ -561,6 +573,17 @@ async function gatorMacros(){
       let meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
       console.log(meal)
 
+
+      let ul = document.getElementById('lunch-menu');
+      for (let key in meal) {
+          let li = document.createElement('li');
+          li.textContent = key;
+          ul.appendChild(li);
+      }
+      document.getElementById('lunch-output').style.display = 'flex'
+      document.getElementById('lunch-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
+      document.getElementById('lunch-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
+
     });
     
     document.getElementById('dinner-submit').addEventListener('click', function() {
@@ -578,6 +601,18 @@ async function gatorMacros(){
       }
       let meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
       console.log(meal)
+
+      
+      let ul = document.getElementById('dinner-menu');
+      for (let key in meal) {
+          let li = document.createElement('li');
+          li.textContent = key;
+          ul.appendChild(li);
+      }
+      document.getElementById('dinner-output').style.display = 'flex'
+      document.getElementById('dinner-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
+      document.getElementById('dinner-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
+
     });
 
     

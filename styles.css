@@ -314,6 +314,7 @@ hr{
   }
  
   .menu-container{
+    flex-direction: column;
     display: flex;
     height: 240px;
     overflow-y: scroll;
