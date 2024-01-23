@@ -12,6 +12,7 @@ html{
 
 
 }
+
 input{
     color: aliceblue;
     background-color: #252835;
@@ -70,6 +71,22 @@ hr{
   height: 1px;
   width: 80%;
   border-radius: 1px;
+}
+
+/* This is the scrollbar track */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* This is the scrollbar itself */
+::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 10px;
+}
+
+/* This is the scrollbar button */
+::-webkit-scrollbar-button {
+  display: none;
 }
 
 #vegetables-included{
@@ -162,7 +179,7 @@ hr{
     flex-direction: column;
     align-items: center;
     transition: 0.3s ease-out;
-    z-index: 100;
+    z-index: 200;
 }
 
 #settings-box{
@@ -177,6 +194,7 @@ hr{
     z-index: 100;
     text-align: center;
     justify-content: space-between;
+    z-index: 200;
 
 }
 #settings-errors{
@@ -238,6 +256,7 @@ hr{
     height: 50vh;
     border-radius: 20px;
     padding: 30px;
+    z-index: -200;
 }
 
 .meal-panel > h2{
@@ -272,7 +291,7 @@ hr{
     position: relative;
     width: 80px;
     height: 80px;
-    z-index: 1;
+    z-index: -100;
   }
   .lds-ellipsis div {
     position: absolute;
@@ -351,8 +370,10 @@ hr{
     flex-direction: column;
     display: flex;
     height: 240px;
-    overflow-y: scroll;
     scroll-behavior: smooth;
+    padding: 0px;
+    scrollbar-color: #383e48;
+    overflow-y: scroll;
     
   }
 
@@ -365,4 +386,9 @@ hr{
 
   .total-container > p{
     margin: 5px;
+  }
+
+
+  .load-container{
+    z-index: -1;
   }
