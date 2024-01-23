@@ -179,7 +179,7 @@ hr{
     flex-direction: column;
     align-items: center;
     transition: 0.3s ease-out;
-    z-index: 200;
+    z-index: 1;
 }
 
 #settings-box{
@@ -194,7 +194,7 @@ hr{
     z-index: 100;
     text-align: center;
     justify-content: space-between;
-    z-index: 200;
+    z-index: 1;
 
 }
 #settings-errors{
@@ -229,6 +229,7 @@ hr{
     justify-content: center;
     align-items: center;
     transition: 0.3s ease-out;
+    z-index: 100;
 }
 
 #info-panel{
@@ -249,14 +250,12 @@ hr{
 }
 
 .meal-panel{ 
-
     background-color: #252835;
     width: 30vw;
     margin: 2vw;
     height: 50vh;
     border-radius: 20px;
     padding: 30px;
-    z-index: -200;
 }
 
 .meal-panel > h2{
@@ -291,7 +290,6 @@ hr{
     position: relative;
     width: 80px;
     height: 80px;
-    z-index: -100;
   }
   .lds-ellipsis div {
     position: absolute;
