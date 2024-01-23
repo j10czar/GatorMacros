@@ -186,11 +186,10 @@ function spawnWelcomeModal(title){
   document.getElementById('welcome-box').style.display = 'flex'
   document.getElementById('modal-container').style.display = 'flex'
   document.getElementById('modal-title').innerHTML = title
-  document.getElementById("welcome-submit").addEventListener('click',function(event){ 
-    event.preventDefault();
-    user_name = document.getElementById('name').value
-    user_calorie = document.getElementById('calorie').value
-    user_protein = document.getElementById('protein').value
+  document.getElementById("welcome-submit").addEventListener('click',function(){ 
+    user_name = document.getElementById('welcome-name').value
+    user_calorie = document.getElementById('welcome-calorie').value
+    user_protein = document.getElementById('welcome-protein').value
     
     if(user_name==='' || user_name===' '){
       alert('Please fill out your first name')
@@ -212,8 +211,7 @@ function spawnWelcomeModal(title){
         veggies: true
       }
       saveToLocalStorage('user-data', user_data)
-      loadInfoPanel()
-
+      location.reload()
     }
     
 
