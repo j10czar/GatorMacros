@@ -390,3 +390,16 @@ hr{
   .load-container{
     z-index: -1;
   }
+
+
+@media (max-width: 650px) {
+    .meal-panel{
+        width: 250px;
+    }
+
+    #meal-container{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+} 
