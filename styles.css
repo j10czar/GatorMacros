@@ -1,6 +1,410 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+
+html{
+    scroll-behavior: smooth;
+    font-family: 'Quicksand', sans-serif;
+    background-color: #1B1D27;
+    overflow-x: hidden;
+    color: aliceblue;
+
+
+
+}
+
+input{
+    color: aliceblue;
+    background-color: #252835;
+    border-radius: 6px;
+    margin-left: 5px;
+    border-style: none;
+    font-family: 'Quicksand', sans-serif;
+    transition: 0.3s ease-out;
+    
+}
+input:focus{
+    border-color: #3C8AFF;
+    border-width: 2px;
+    border-radius: 8px;
+}
+
+button{
+    background-color: #383e48;
+    border-style: none;
+    font-family: 'Quicksand', sans-serif;
+    color: aliceblue;
+    font-weight: 500;
+    border-radius: 15px;
+    padding: 10px;
+    transition: 0.3s ease-out;
+
+}
+button:hover{
+    background-color: aliceblue;
+    border-radius: 10px;
+    color: #3C8AFF;
+
+}
+
+select{
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: aliceblue;
+    background-color: #1B1D27 ;
+    border-color: #1B1D27;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.3s ease-out;
+}
+select:hover{
+    background-color: #383e48;
+
+}
+
+hr{
+  border: none;
+  border-top: 1px solid aliceblue; 
+  color: aliceblue;
+  background-color: aliceblue;
+  height: 1px;
+  width: 80%;
+  border-radius: 1px;
+}
+
+/* This is the scrollbar track */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* This is the scrollbar itself */
+::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 10px;
+}
+
+#vegetables-included{
+  width: 25px;
+  height: 25px;
+  background-color: #383e48;
+  color: #252835;
+  border-radius: 5px;
+
+}
+
+
+
+.load-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: 0.3s ease-out;
+
+}
+
+.dining-select{
+    display: none;
+    transition: 0.3s ease-out;
+}
+.button-1{
+    background-color: #3C8AFF;
+    border-style: none;
+    font-family: 'Quicksand', sans-serif;
+    color: aliceblue;
+    font-weight: 500;
+    border-radius: 15px;
+    padding: 10px;
+    transition: 0.3s ease-out;
+}
+.button-1:hover{
+    background-color: aliceblue;
+    border-radius: 10px;
+    color: #3C8AFF;
+}
+
+.button-2{
+    background-color: #383e48;
+    border-style: none;
+    font-family: 'Quicksand', sans-serif;
+    color: aliceblue;
+    font-weight: 500;
+    font-size: 10px;
+    border-radius: 15px;
+    padding: 5px;
+    transition: 0.3s ease-out;
+}
+.button-2:hover{
+    background-color: aliceblue;
+    border-radius: 10px;
+    color: #3C8AFF;
+}
 #errortext{
     color: red;
 }
 #welcome-box{
     display: none;
 }
+#header{
+    background: #252835;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+    height: 100px;
+    padding: 0px;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: -25px;
+    width: 101vw;
+
+}
+
+#gm-logo{
+    height: 75px;
+    margin-left: 20px;
+    margin-top: 22px;
+}
+
+#welcome-box{
+    background-color: #12131b;
+    width: 350px;
+    height: 250px;
+    border-radius: 7px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.3s ease-out;
+    z-index: 1;
+}
+
+#settings-box{
+    background-color: #12131b;
+    width: 350px;
+    height: 350px;
+    border-radius: 7px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+    display: none;
+    flex-direction: column;
+    transition: 0.3s ease-out;
+    z-index: 100;
+    text-align: center;
+    justify-content: space-between;
+    z-index: 1;
+
+}
+#settings-errors{
+
+    color: #FF8E3C;
+    font-weight: 700;
+
+
+}
+
+.model-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#modal-btn-container{
+  margin-bottom: 10px;
+}
+
+#modal-btn-container > button{
+    margin: 10px;
+}
+
+#modal-container{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s ease-out;
+    z-index: 100;
+}
+
+#info-panel{
+    margin-left: 18px;
+    width: fit-content;
+}
+
+#info-panel > h1{
+  width: fit-content;
+  margin-top: 0px;
+}
+#info-panel > p {
+  width: fit-content;
+}
+#meal-container{
+    display: flex;
+
+}
+
+.meal-panel{ 
+    background-color: #252835;
+    width: 30vw;
+    margin: 2vw;
+    height: 400px;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 0px;
+    margin-top: 10px;
+}
+
+.meal-panel > h2{
+    text-align: center;
+    margin-top: 0px;
+}
+
+
+
+#menu-info{
+    justify-content: center;
+    align-items: center;
+    background-color: #383e48;
+    border-color: #FF8E3C;
+    color: #FF8E3C;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    padding: 10px;
+    width: fit-content;
+    font-weight: 700;
+    display: none;
+    height: fit-content;
+    margin-top: 5px;
+    margin-right: 10px;
+
+}
+
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  .lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
+
+
+  #top-container{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #right-panel{
+    display: flex;
+    margin-right: 20px;
+    justify-content: end;
+  }
+
+  #settings-icon{
+    width: 50px;
+    height: 50px;
+
+  }
+
+  .output-container{
+    display: none;
+    flex-direction: column;
+  }
+ 
+  .menu-container{
+    flex-direction: column;
+    display: flex;
+    height: 240px;
+    scroll-behavior: smooth;
+    padding: 0px;
+    scrollbar-color: #383e48;
+    overflow-y: scroll;
+    
+  }
+
+  .total-container > h4{
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .total-container > p{
+    margin: 5px;
+  }
+
+
+  .load-container{
+    z-index: -1;
+  }
+
+  #copyright{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #363a4c;
+  }
+
+
+@media (max-width: 650px) {
+    .meal-panel{
+        width: 250px;
+        height: 400px;
+    }
+
+    #meal-container{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+} 

@@ -5,25 +5,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GatorMacros</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="./resources/icon.png" type="image/x-icon">
+    <meta name="theme-color" content="#252835">
+    
 </head>
 <body>
-    <h1>GatorMacros</h1>
+    <div id="header">
+        <img src="./resources/gm-logo.png" alt="gatormacros" id="gm-logo">
+    </div>
     <h3 id="errortext"></h3>
-    <div id="welcome-box">
-        <form action="">
-            <h2>Welcome to GatorMacros</h2>
-            <label for="name">First Name:</label>
-            <input type="text" id="name" name="name">
-            <label for="calorie">Calorie Goal:</label>
-            <input type="number" id="calorie" name="calorie">
-            <label for="protein">Protien Goal:</label>
-            <input type="number" id="protein" name="protein">
+    
+    <div id="modal-container">
+        <div id="welcome-box">
+            <form action="">
+                <h2 id="modal-title">Welcome to GatorMacros</h2>
+                <div class="model-item">
+                <label for="welcome-name">First Name: </label>
+                <input type="text" id="welcome-name" name="welcome-name">
+                </div>
+                <br>
+                <div class="model-item">
+                <label for="welcome-calorie">Calorie Goal: </label>
+                <input type="number" id="welcome-calorie" name="welcome-calorie">
+                </div>
+                <br>
+                <div class="model-item">
+                <label for="welcome-protein">Protein Goal: </label>
+                <input type="number" id="welcome-protein" name="welcome-protein">
+                </div>
+                <br>
+                <div class="model-item" id="modal-btn-container">
+                <button type="button" id="welcome-submit" class="button-1">Get Started</button>
+                </div>
 
-            <button type="button" id="welcome-submit">Get Started</button>
+            </form>
 
-        </form>
+        </div>
+
+        <div>
+            <form action="" id="settings-box">
+                <div>
+                    <h2>Settings</h2>
+                    <div class="model-item">
+                    <label for="welcome-name">Change Name: </label>
+                    <input type="text" id="settings-name" name="welcome-name">
+                    </div>
+                    <br>
+                    <div class="model-item">
+                    <label for="welcome-calorie">Calorie Goal: </label>
+                    <input type="number" id="settings-calorie" name="welcome-calorie">
+                    </div>
+                    <br>
+                    <div class="model-item">
+                    <label for="welcome-protein">Protein Goal: </label>
+                    <input type="number" id="settings-protein" name="welcome-protein">
+                    </div>
+                    <br>
+                    <div class="model-item">
+                        <label for="vegetables-included">Vegetables included in meal:</label>
+                        <input type="checkbox" id="vegetables-included" name="vegetables-included">
+                    </div>
+                    <br>
+                    <p id="settings-errors"></p>
+                </div>
+                
+                <div class="model-item" id="modal-btn-container">
+                <button type="button" id="settings-submit" class="button-1">Save</button>
+                <button type="button" class="close-button">Close</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div id="top-container">
+        <div id="info-panel">
+            <h1 id="greeting">Welcome!</h1>
+            <p id="protein-display">Protein goal:</p>
+            <p id="calorie-display">Calorie goal:</p>
+        
+        </div>
+
+        <div id="right-panel">
+            <div id="menu-info">
+            </div>
+            <img src="./resources/settings.png" alt="Settings" onclick="openSettings()" id="settings-icon"/>
+
+        </div>
+        
 
     </div>
+
+    
+
+    <div id="meal-container">
+        <div id="breakfast" class="meal-panel">
+            <h2>Breakfast</h2>
+            <div class="load-container">
+            
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                <br>
+                <p>Loading Menu</p> 
+                       
+            </div>
+            <div class="dining-select" id="breakfast-select">
+                <h4>Select Dining Hall:</h4>
+                <select id="breakfast-dropdown">
+                    <option value="corner">Gator Corner</option>
+                    <option value="broward">Broward Dining</option>
+                  </select>
+                  <br> <br>
+                  <button id="breakfast-submit">Calculate Plan</button>
+            </div>
+            <div class="output-container" id="breakfast-output">
+                <div class="menu-container"
+                    <ul id="breakfast-menu">
+                    </ul>
+                </div>
+                <hr>
+                <div class="total-container">
+                    <h4>Total:</h4>
+                    <p id="breakfast-p">Protein:</p>
+                    <p id="breakfast-c">Calories:</p>
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="lunch" class="meal-panel">
+            <h2>Lunch</h2>
+            <div class="load-container">
+              
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                <br>
+                <p>Loading Menu</p> 
+            </div>
+            <div class="dining-select" id="lunch-select">
+    
+                <h4>Select Dining Hall:</h4>
+                <select id="lunch-dropdown">
+                    <option value="corner">Gator Corner</option>
+                    <option value="broward">Broward Dining</option>
+                    <option value="raquet">Raquet Club</option>
+                  </select>
+                  <br> <br>
+                  <button id="lunch-submit">Calculate Plan</button>
+            </div>
+            <div class="output-container" id="lunch-output">
+                <div class="menu-container">
+                    <ul id="lunch-menu">
+                    </ul>
+                </div>
+                <hr>
+                <div class="total-container">
+                    <h4>Total:</h4>
+                    <p id="lunch-p">Protein:</p>
+                    <p id="lunch-c">Calories:</p>
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="dinner" class="meal-panel">
+            <h2>Dinner</h2>
+            <div class="load-container">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                <br>
+                <p>Loading Menu</p> 
+            </div>
+            
+            <div class="dining-select" id="dinner-select">
+                <h4>Select Dining Hall:</h4>
+                <select id="dinner-dropdown">
+                    <option value="corner">Gator Corner</option>
+                    <option value="broward">Broward Dining</option>
+                    <option value="raquet">Raquet Club</option>
+                  </select>
+                  <br> <br>
+                  <button id="dinner-submit">Calculate Plan</button>
+            </div>
+
+            <div class="output-container" id="dinner-output">
+                <div class="menu-container" >
+                    <ul id="dinner-menu">
+                    </ul>
+                </div>
+                <hr>
+                <div class="total-container">
+                    <h4>Total:</h4>
+                    <p id="dinner-p">Protein:</p>
+                    <p id="dinner-c">Calories:</p>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <div id="copyright"> <p>© 2024 Jason Tenczar. All rights reserved</p></div>
 
     <script src="index.js"></script>
 </body>
