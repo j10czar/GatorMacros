@@ -364,6 +364,60 @@ function createMeal(menu, proteinGoal, calorieGoal, isRegen, isVeggie) {
 }
 
 
+function createRaquetMeal(menu, proteinGoal, calorieGoal) {
+
+  let userScoreGoal = calorieGoal+25*proteinGoal
+  let meal = {}
+
+  const desserts = ["Chocolate Chip Cookie","Cinnamon Churros","Cinnamon Roll","Cinnamon and Sugar Donut","Strawberry Shortcake Biscuit",]
+  let menuArray = Object.entries(menu).map(([item, values]) => ({
+    item, 
+    calories: values.calories, 
+    protein: values.protein, 
+    score: values.score
+  }))
+
+  let dessertArray = []
+  let entreeArray = []
+
+  for(let i=0; i<menuArray.length;i++){
+    if(desserts.includes(menuArray[i].item)){
+      dessertArray.push(menuArray[i])
+    }
+    else{
+      entreeArray.push(menuArray[i])
+    }
+  }
+
+  entreeArray.sort((a, b) => b.score - a.score)
+  dessertArray.sort((a, b) => b.score - a.score)
+
+
+  for(let i = 0; i<entreeArray.length;i++){
+    if(entreeArray[i].score<=userScoreGoal){
+      for(let j = 0; j<dessertArray.length;j++){
+        if(entreeArray[i].score+dessertArray[j].score<=userScoreGoal){
+          meal[entreeArray[i].item] = {
+            calories: entreeArray[i].calories,
+            protein: entreeArray[i].protein
+          }
+          meal[dessertArray[j].item] = {
+            calories: dessertArray[j].calories,
+            protein: dessertArray[j].protein
+          }
+          return meal
+        }
+      } 
+
+    }
+  }
+
+
+
+  
+  
+}
+
 function calculateTotals(meal) {
   let totalProtein = 0;
   let totalCalories = 0;
@@ -550,7 +604,6 @@ async function gatorMacros(){
 
 
       let meal = createMeal(breakfastMenu,userProtein/3,userCalorie/3,false,userVeggies)
-      console.log(meal)
 
 
       let ul = document.getElementById('breakfast-menu');
@@ -568,20 +621,22 @@ async function gatorMacros(){
       
     });  
     document.getElementById('lunch-submit').addEventListener('click', function() {
+      let meal = {}
       var lunchOption = document.getElementById('lunch-dropdown').value;
       document.getElementById('lunch-select').style.display = 'none'
       if(lunchOption==='corner'){
         lunchMenu = sortRawData(fetchedCornerData,1)
+        meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
         
       }
       else if(lunchOption==='broward'){
         lunchMenu = sortRawData(fetchedBrowardData,1)
+        meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
       }
       else{
         lunchMenu = sortRawData(fetchedRaquetData,0)
+        meal = createRaquetMeal(lunchMenu,userProtein/3,userCalorie/3)
       }
-      let meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
-      console.log(meal)
 
 
       let ul = document.getElementById('lunch-menu');
@@ -597,20 +652,23 @@ async function gatorMacros(){
     });
     
     document.getElementById('dinner-submit').addEventListener('click', function() {
+      let meal = {}
       var dinnerOption = document.getElementById('dinner-dropdown').value;
       document.getElementById('dinner-select').style.display = 'none'
       if(dinnerOption==='corner'){
         dinnerMenu = sortRawData(fetchedCornerData,2)
+        meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
         
       }
       else if(dinnerOption==='broward'){
+       
         dinnerMenu = sortRawData(fetchedBrowardData,2)
+        meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
       }
       else{
         dinnerMenu = sortRawData(fetchedRaquetData,0)
+        meal = createRaquetMeal(dinnerMenu,userProtein/3,userCalorie/3)
       }
-      let meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
-      console.log(meal)
 
 
       let ul = document.getElementById('dinner-menu');
