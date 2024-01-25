@@ -394,6 +394,10 @@ hr{
     font-weight: 700;
     color: #363a4c;
   }
+  #copyright > a{
+    color: #323647;
+    margin-right: 20px;
+  }
 
 
 @media (max-width: 650px) {
@@ -408,3 +412,4 @@ hr{
         justify-content: center;
     }
 } 
+
