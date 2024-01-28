@@ -552,41 +552,88 @@ async function gatorMacros(){
     let fetchedCornerData;
     let fetchedBrowardData;
     let fetchedRaquetData;
+
+    if(getFromLocalStorage('date-fetched')===getTodayDate()){
+      console.log('data is up to date')
+      document.querySelectorAll('.load-container').forEach(element => {
+        element.style.display = 'none';
+      });
+        if(getFromLocalStorage('corner-data')!=null && getFromLocalStorage('corner-data')!=undefined){
+          fetchedCornerData = getFromLocalStorage('corner-data')
+        }
+        else{
+          removeOption('breakfast-dropdown','corner')
+          removeOption('lunch-dropdown','corner')
+          removeOption('dinner-dropdown','corner')
+          document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
+          document.getElementById('menu-info').style.display = 'flex'
+        }
+        if(getFromLocalStorage('broward-data')!=null && getFromLocalStorage('broward-data')!=undefined){
+          fetchedBrowardData = getFromLocalStorage('broward-data')
+        }
+        else{
+          removeOption('breakfast-dropdown','broward')
+          removeOption('lunch-dropdown','broward')
+          removeOption('dinner-dropdown','broward')
+          document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+          document.getElementById('menu-info').style.display = 'flex'
+        }
+        if(getFromLocalStorage('raquet-data')!=null && getFromLocalStorage('raquet-data')!=undefined && sortRawData(getFromLocalStorage('raquet-data'),0).length>0){
+          fetchedRaquetData = getFromLocalStorage('raquet-data')
+
+        }
+        else{
+          removeOption('lunch-dropdown','raquet')
+          removeOption('dinner-dropdown','raquet')
+          document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
+          document.getElementById('menu-info').style.display = 'flex'
+        }
+        
+        
+
+    }
+    else{
+
+      saveToLocalStorage('date-fetched',getTodayDate())
     
-    try{
-      fetchedCornerData = await fetchCornerData();
-    }catch(error){
-      removeOption('breakfast-dropdown','corner')
-      removeOption('lunch-dropdown','corner')
-      removeOption('dinner-dropdown','corner')
-      document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
-      document.getElementById('menu-info').style.display = 'flex'
-    }
-    try{
-      fetchedBrowardData = await fetchBrowardData();
-    }catch(error){
-      removeOption('breakfast-dropdown','broward')
-      removeOption('lunch-dropdown','broward')
-      removeOption('dinner-dropdown','broward')
-      document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
-      document.getElementById('menu-info').style.display = 'flex'
-    }
-    try{
-      fetchedRaquetData = await fetchRaquetData();
-    }
-    catch(error){
-      removeOption('lunch-dropdown','raquet')
-      removeOption('dinner-dropdown','raquet')
-      document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
-      document.getElementById('menu-info').style.display = 'flex'
-    }
-    document.querySelectorAll('.load-container').forEach(element => {
-      element.style.display = 'none';
-  });
-  
-  document.querySelectorAll('.dining-select').forEach(element => {
-      element.style.display = 'inline';
-  });
+      try{
+        fetchedCornerData = await fetchCornerData();
+        saveToLocalStorage('corner-data', fetchedCornerData)
+      }catch(error){
+        removeOption('breakfast-dropdown','corner')
+        removeOption('lunch-dropdown','corner')
+        removeOption('dinner-dropdown','corner')
+        document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
+        document.getElementById('menu-info').style.display = 'flex'
+      }
+      try{
+        fetchedBrowardData = await fetchBrowardData();
+        saveToLocalStorage('broward-data', fetchedBrowardData)
+      }catch(error){
+        removeOption('breakfast-dropdown','broward')
+        removeOption('lunch-dropdown','broward')
+        removeOption('dinner-dropdown','broward')
+        document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+        document.getElementById('menu-info').style.display = 'flex'
+      }
+      try{
+        fetchedRaquetData = await fetchRaquetData();
+        saveToLocalStorage('raquet-data', fetchedRaquetData)
+      }
+      catch(error){
+        removeOption('lunch-dropdown','raquet')
+        removeOption('dinner-dropdown','raquet')
+        document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
+        document.getElementById('menu-info').style.display = 'flex'
+      }
+      document.querySelectorAll('.load-container').forEach(element => {
+        element.style.display = 'none';
+    });
+  }
+    
+    document.querySelectorAll('.dining-select').forEach(element => {
+        element.style.display = 'inline';
+    });
     var breakfastMenu = {}
     var lunchMenu = {}
     var dinnerMenu = {}
