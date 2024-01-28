@@ -275,8 +275,6 @@ hr{
     font-weight: 700;
     display: none;
     height: fit-content;
-    margin-top: 5px;
-    margin-right: 10px;
 
 }
 
@@ -342,17 +340,35 @@ hr{
     display: flex;
     justify-content: space-between;
   }
-
   #right-panel{
+    display: flex;
+    justify-content: end;
+
+  }
+
+  #right-settings-panel{
     display: flex;
     margin-right: 20px;
     justify-content: end;
   }
 
+  #full-menu{
+    text-decoration: none;
+    height: fit-content;
+    font-size: 14px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+
+    
+  }
   #settings-icon{
     width: 50px;
     height: 50px;
 
+  }
+  #settings-icon:hover{
+    cursor: pointer;
   }
 
   .output-container{
