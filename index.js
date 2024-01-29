@@ -468,7 +468,6 @@ function openSettings(){
     user_veggies = document.getElementById('vegetables-included').checked
 
 
-    console.log(user_name)
 
     if(user_data.veggies!=user_veggies){
       allowed = true
@@ -554,7 +553,6 @@ async function gatorMacros(){
     let fetchedRaquetData;
 
     if(getFromLocalStorage('date-fetched')===getTodayDate()){
-      console.log('data is up to date')
       document.querySelectorAll('.load-container').forEach(element => {
         element.style.display = 'none';
       });
@@ -617,8 +615,18 @@ async function gatorMacros(){
         document.getElementById('menu-info').style.display = 'flex'
       }
       try{
-        fetchedRaquetData = await fetchRaquetData();
-        saveToLocalStorage('raquet-data', fetchedRaquetData)
+        let tempRaquet = await fetchRaquetData();
+        if(sortRawData(tempRaquet,0).length>0){
+          fetchedRaquetData = tempRaquet
+          saveToLocalStorage('raquet-data', fetchedRaquetData)
+        }
+        else{
+          removeOption('lunch-dropdown','raquet')
+          removeOption('dinner-dropdown','raquet')
+          document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
+          document.getElementById('menu-info').style.display = 'flex'
+          
+        }
       }
       catch(error){
         removeOption('lunch-dropdown','raquet')
@@ -637,10 +645,17 @@ async function gatorMacros(){
     var breakfastMenu = {}
     var lunchMenu = {}
     var dinnerMenu = {}
+    let locations = {
+      'corner': 'Gator Corner:',
+      'broward': 'Broward Dining:',
+      'raquet': 'Raquet Club:'
+    }
 
 
     document.getElementById('breakfast-submit').addEventListener('click', function() {
       var breakfastOption = document.getElementById('breakfast-dropdown').value;
+      document.getElementById('breakfast-location').innerHTML = locations[breakfastOption]
+      document.getElementById('breakfast-location').style.display = 'flex'
       document.getElementById('breakfast-select').style.display = 'none'
       if(breakfastOption==='broward'){
         breakfastMenu = sortRawData(fetchedBrowardData,0)
@@ -670,6 +685,8 @@ async function gatorMacros(){
     document.getElementById('lunch-submit').addEventListener('click', function() {
       let meal = {}
       var lunchOption = document.getElementById('lunch-dropdown').value;
+      document.getElementById('lunch-location').innerHTML = locations[lunchOption]
+      document.getElementById('lunch-location').style.display = 'flex'
       document.getElementById('lunch-select').style.display = 'none'
       if(lunchOption==='corner'){
         lunchMenu = sortRawData(fetchedCornerData,1)
@@ -701,6 +718,8 @@ async function gatorMacros(){
     document.getElementById('dinner-submit').addEventListener('click', function() {
       let meal = {}
       var dinnerOption = document.getElementById('dinner-dropdown').value;
+      document.getElementById('dinner-location').innerHTML = locations[dinnerOption]
+      document.getElementById('dinner-location').style.display = 'flex'
       document.getElementById('dinner-select').style.display = 'none'
       if(dinnerOption==='corner'){
         dinnerMenu = sortRawData(fetchedCornerData,2)

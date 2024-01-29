@@ -257,6 +257,7 @@ hr{
 .meal-panel > h2{
     text-align: center;
     margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 
@@ -359,16 +360,40 @@ hr{
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 10px;
+  }
 
-    
+  #reselect{
+    text-decoration: none;
+    height: fit-content;
+    font-size: 14px;
+    font-weight: 800;
+    color: #363a4c;
+    text-align: end;
+    transition: 0.3s ease-out;
+
+  }
+
+  #reselect:hover{
+    color: #3C8AFF;
+  }
+
+  #reselect-panel{
+    display: flex;
+    justify-content: end;
+    margin-top: 58px;
+    margin-right: 32px;
   }
   #settings-icon{
     width: 50px;
     height: 50px;
-
+    opacity: 0.7;
+    transition: 0.3s ease-out;
   }
+
+
   #settings-icon:hover{
     cursor: pointer;
+    opacity: 1;
   }
 
   .output-container{
@@ -415,6 +440,13 @@ hr{
     margin-right: 20px;
   }
 
+  .location{
+    display: none;
+    color: #c6cedb;
+    margin: 5px;
+    text-align: center;
+  }
+
 
 @media (max-width: 650px) {
     .meal-panel{
@@ -426,6 +458,17 @@ hr{
         flex-direction: column;
         align-items: center;
         justify-content: center;
+    }
+    #reselect-panel{
+      margin-right: 5vw;
+      margin-top: 100px;
+    }
+    #full-menu{
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    #menu-info{
+      font-size: 10px;
     }
 } 
 

@@ -74,7 +74,7 @@
                     </div>
                     <br>
                     <div class="model-item">
-                        <label for="vegetables-included">Vegetables included in meal:</label>
+                        <label for="vegetables-included">Add vegetables:</label>
                         <input type="checkbox" id="vegetables-included" name="vegetables-included">
                     </div>
                     <br>
@@ -98,19 +98,24 @@
             <p id="calorie-display">Calorie goal:</p>
         
         </div>
-
-        <div id="right-panel">
-            <div id="menu-info">
+        <div>
+            <div id="right-panel">
+                <div id="menu-info">
+                </div>
+                <a href="https://dineoncampus.com/UF/whats-on-the-menu" class="button-2" id="full-menu">Menu</a>
+                
+                <div id="right-settings-panel">
+                    <img src="./resources/settings.png" alt="Settings" onclick="openSettings()" id="settings-icon"/>
+                </div>
             </div>
-            <a href="https://dineoncampus.com/UF/whats-on-the-menu" class="button-2" id="full-menu">Full Menu</a>
-            <div id="right-settings-panel">
-                <img src="./resources/settings.png" alt="Settings" onclick="openSettings()" id="settings-icon"/>
+            <div id="reselect-panel">
+                <a href="/" id="reselect">Reset Locations</a>
             </div>
-
             
 
-
         </div>
+
+        
         
 
     </div>
@@ -120,6 +125,7 @@
     <div id="meal-container">
         <div id="breakfast" class="meal-panel">
             <h2>Breakfast</h2>
+            <h5 id="breakfast-location" class="location"></h5>
             <div class="load-container">
             
                 <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
@@ -137,9 +143,8 @@
                   <button id="breakfast-submit">Calculate Plan</button>
             </div>
             <div class="output-container" id="breakfast-output">
-                <div class="menu-container"
-                    <ul id="breakfast-menu">
-                    </ul>
+                <div class="menu-container">
+                    <ul id="breakfast-menu"> </ul>
                 </div>
                 <hr>
                 <div class="total-container">
@@ -153,6 +158,7 @@
 
         <div id="lunch" class="meal-panel">
             <h2>Lunch</h2>
+            <h5 id="lunch-location" class="location"></h5>
             <div class="load-container">
               
                 <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
@@ -187,6 +193,7 @@
 
         <div id="dinner" class="meal-panel">
             <h2>Dinner</h2>
+            <h5 id="dinner-location" class="location"></h5>
             <div class="load-container">
                 <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                 <br>
