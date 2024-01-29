@@ -142,9 +142,6 @@ hr{
 #errortext{
     color: red;
 }
-#welcome-box{
-    display: none;
-}
 #header{
     background: #252835;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
@@ -164,9 +161,10 @@ hr{
 }
 
 #welcome-box{
+  display: none;
     background-color: #12131b;
     width: 350px;
-    height: 250px;
+    height: 350px;
     border-radius: 7px;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
     display: none;
@@ -175,6 +173,15 @@ hr{
     transition: 0.3s ease-out;
     z-index: 1;
 }
+
+#welcome-p{
+  margin: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #72778d;
+  margin-bottom: 20px;
+}
+
 
 #settings-box{
     background-color: #12131b;
@@ -224,6 +231,10 @@ hr{
     align-items: center;
     transition: 0.3s ease-out;
     z-index: 100;
+}
+
+#modal-title{
+  text-align: center;
 }
 
 #info-panel{

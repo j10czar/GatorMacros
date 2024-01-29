@@ -15,7 +15,9 @@
     <title>GatorMacros</title>
     <meta name="application-name" content="gatormacros">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="./resources/icon.png" type="image/x-icon">
+    <link rel="apple-touch-icon" href="./images/icon.png">
+
+    <link rel="icon" href="./images/icon.png" type="image/x-icon">
     <meta name="theme-color" content="#252835">
     <meta name="description" content="Gatormacros is a meal plan calculator for University of Florida students that uses dining hall menus to calculate a customizable meal plan that reaches a certain protein and calorie goal.">
     <meta name="keywords" content="meal plan, meal, plan, calculator, meal plan calculator, gator, macros, gatormacros, gator macros, gator macros meal plan, gator macros meal plan calculator, gator macros meal plan calculator meal plan, gator macros meal plan calculator meal plan calculator, gator macros meal plan calculator meal plan calculator meal plan, gator macros meal plan calculator meal plan calculator meal plan calculator, gator macros meal plan calculator meal plan calculator meal plan calculator meal plan, gator macros meal plan calculator meal plan calculator meal plan calculator meal plan calculator, gator macros meal plan calculator meal plan calculator meal plan calculator meal plan calculator meal plan, gator macros meal plan calculator meal plan calculator meal plan calculator meal plan calculator meal plan calculator, gator macros meal plan calculator meal plan calculator meal plan calculator meal plan calculator meal plan calculator meal plan, University of Florida meal calculator">
@@ -23,7 +25,7 @@
 </head>
 <body>
     <div id="header">
-        <img src="./resources/gm-logo.png" alt="gatormacros" id="gm-logo">
+        <img src="./images/gm-logo.png" alt="gatormacros" id="gm-logo">
     </div>
     <h3 id="errortext"></h3>
     
@@ -31,6 +33,7 @@
         <div id="welcome-box">
             <form action="">
                 <h2 id="modal-title">Welcome to GatorMacros</h2>
+                <p id="welcome-p">GatorMacros is for the University of Florida dining meal plan. GatorMacros generates custom meal plans with live menu data from all three dining halls across campus.</p>
                 <div class="model-item">
                 <label for="welcome-name">First Name: </label>
                 <input type="text" id="welcome-name" name="welcome-name">
@@ -105,7 +108,7 @@
                 <a href="https://dineoncampus.com/UF/whats-on-the-menu" class="button-2" id="full-menu">Menu</a>
                 
                 <div id="right-settings-panel">
-                    <img src="./resources/settings.png" alt="Settings" onclick="openSettings()" id="settings-icon"/>
+                    <img src="./images/settings.png" alt="Settings" onclick="openSettings()" id="settings-icon"/>
                 </div>
             </div>
             <div id="reselect-panel">
