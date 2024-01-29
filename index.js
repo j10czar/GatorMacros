@@ -539,6 +539,8 @@ async function gatorMacros(){
     document.querySelectorAll('.load-container').forEach(element => {
       element.style.display = 'flex';
     });
+
+    
     
     user_data = getFromLocalStorage('user-data')
     loadInfoPanel()
@@ -552,7 +554,7 @@ async function gatorMacros(){
       let fetchedBrowardData;
       let fetchedRaquetData;
   
-      if(getFromLocalStorage('date-fetched')===getTodayDate()){
+      if(getFromLocalStorage('date-fetched')===getTodayDate() && !getFromLocalStorage('incomplete-load')){
         document.querySelectorAll('.load-container').forEach(element => {
           element.style.display = 'none';
         });
@@ -591,7 +593,8 @@ async function gatorMacros(){
   
       }
       else{
-  
+
+        saveToLocalStorage('incomplete-load',true)
         saveToLocalStorage('date-fetched',getTodayDate())
       
         try{
@@ -759,6 +762,8 @@ async function gatorMacros(){
       console.log(error);
       errortext.innerHTML = 'Application Error:'+error.message 
     }
+
+    saveToLocalStorage('incomplete-load',false)
   }
 
 
