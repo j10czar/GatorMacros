@@ -536,228 +536,233 @@ async function gatorMacros(){
     spawnWelcomeModal("Welcome to GatorMacros!")
   }
   else{
+    document.querySelectorAll('.load-container').forEach(element => {
+      element.style.display = 'flex';
+    });
+    
     user_data = getFromLocalStorage('user-data')
     loadInfoPanel()
     userName = user_data.name
     userCalorie = user_data.calorie
     userProtein = user_data.protein
     userVeggies = user_data.veggies
-  }
+    try {
 
-
-
-  try {
-
-    let fetchedCornerData;
-    let fetchedBrowardData;
-    let fetchedRaquetData;
-
-    if(getFromLocalStorage('date-fetched')===getTodayDate()){
-      document.querySelectorAll('.load-container').forEach(element => {
-        element.style.display = 'none';
-      });
-        if(getFromLocalStorage('corner-data')!=null && getFromLocalStorage('corner-data')!=undefined){
-          fetchedCornerData = getFromLocalStorage('corner-data')
-        }
-        else{
+      let fetchedCornerData;
+      let fetchedBrowardData;
+      let fetchedRaquetData;
+  
+      if(getFromLocalStorage('date-fetched')===getTodayDate()){
+        document.querySelectorAll('.load-container').forEach(element => {
+          element.style.display = 'none';
+        });
+          if(getFromLocalStorage('corner-data')!=null && getFromLocalStorage('corner-data')!=undefined){
+            fetchedCornerData = getFromLocalStorage('corner-data')
+          }
+          else{
+            removeOption('breakfast-dropdown','corner')
+            removeOption('lunch-dropdown','corner')
+            removeOption('dinner-dropdown','corner')
+            document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+          }
+          if(getFromLocalStorage('broward-data')!=null && getFromLocalStorage('broward-data')!=undefined){
+            fetchedBrowardData = getFromLocalStorage('broward-data')
+          }
+          else{
+            removeOption('breakfast-dropdown','broward')
+            removeOption('lunch-dropdown','broward')
+            removeOption('dinner-dropdown','broward')
+            document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+          }
+          if(getFromLocalStorage('raquet-data')!=null && getFromLocalStorage('raquet-data')!=undefined && sortRawData(getFromLocalStorage('raquet-data'),0).length>0){
+            fetchedRaquetData = getFromLocalStorage('raquet-data')
+  
+          }
+          else{
+            removeOption('lunch-dropdown','raquet')
+            removeOption('dinner-dropdown','raquet')
+            document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+          }
+          
+          
+  
+      }
+      else{
+  
+        saveToLocalStorage('date-fetched',getTodayDate())
+      
+        try{
+          fetchedCornerData = await fetchCornerData();
+          saveToLocalStorage('corner-data', fetchedCornerData)
+        }catch(error){
           removeOption('breakfast-dropdown','corner')
           removeOption('lunch-dropdown','corner')
           removeOption('dinner-dropdown','corner')
           document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
           document.getElementById('menu-info').style.display = 'flex'
         }
-        if(getFromLocalStorage('broward-data')!=null && getFromLocalStorage('broward-data')!=undefined){
-          fetchedBrowardData = getFromLocalStorage('broward-data')
-        }
-        else{
+        try{
+          fetchedBrowardData = await fetchBrowardData();
+          saveToLocalStorage('broward-data', fetchedBrowardData)
+        }catch(error){
           removeOption('breakfast-dropdown','broward')
           removeOption('lunch-dropdown','broward')
           removeOption('dinner-dropdown','broward')
           document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
           document.getElementById('menu-info').style.display = 'flex'
         }
-        if(getFromLocalStorage('raquet-data')!=null && getFromLocalStorage('raquet-data')!=undefined && sortRawData(getFromLocalStorage('raquet-data'),0).length>0){
-          fetchedRaquetData = getFromLocalStorage('raquet-data')
-
+        try{
+          let tempRaquet = await fetchRaquetData();
+          if(sortRawData(tempRaquet,0).length>0){
+            fetchedRaquetData = tempRaquet
+            saveToLocalStorage('raquet-data', fetchedRaquetData)
+          }
+          else{
+            removeOption('lunch-dropdown','raquet')
+            removeOption('dinner-dropdown','raquet')
+            document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+            
+          }
         }
-        else{
+        catch(error){
           removeOption('lunch-dropdown','raquet')
           removeOption('dinner-dropdown','raquet')
           document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
           document.getElementById('menu-info').style.display = 'flex'
         }
-        
-        
-
+        document.querySelectorAll('.load-container').forEach(element => {
+          element.style.display = 'none';
+      });
     }
-    else{
-
-      saveToLocalStorage('date-fetched',getTodayDate())
-    
-      try{
-        fetchedCornerData = await fetchCornerData();
-        saveToLocalStorage('corner-data', fetchedCornerData)
-      }catch(error){
-        removeOption('breakfast-dropdown','corner')
-        removeOption('lunch-dropdown','corner')
-        removeOption('dinner-dropdown','corner')
-        document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
-        document.getElementById('menu-info').style.display = 'flex'
+      
+      document.querySelectorAll('.dining-select').forEach(element => {
+          element.style.display = 'inline';
+      });
+      var breakfastMenu = {}
+      var lunchMenu = {}
+      var dinnerMenu = {}
+      let locations = {
+        'corner': 'Gator Corner:',
+        'broward': 'Broward Dining:',
+        'raquet': 'Raquet Club:'
       }
-      try{
-        fetchedBrowardData = await fetchBrowardData();
-        saveToLocalStorage('broward-data', fetchedBrowardData)
-      }catch(error){
-        removeOption('breakfast-dropdown','broward')
-        removeOption('lunch-dropdown','broward')
-        removeOption('dinner-dropdown','broward')
-        document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
-        document.getElementById('menu-info').style.display = 'flex'
-      }
-      try{
-        let tempRaquet = await fetchRaquetData();
-        if(sortRawData(tempRaquet,0).length>0){
-          fetchedRaquetData = tempRaquet
-          saveToLocalStorage('raquet-data', fetchedRaquetData)
+  
+  
+      document.getElementById('breakfast-submit').addEventListener('click', function() {
+        var breakfastOption = document.getElementById('breakfast-dropdown').value;
+        document.getElementById('breakfast-location').innerHTML = locations[breakfastOption]
+        document.getElementById('breakfast-location').style.display = 'flex'
+        document.getElementById('breakfast-select').style.display = 'none'
+        if(breakfastOption==='broward'){
+          breakfastMenu = sortRawData(fetchedBrowardData,0)
         }
         else{
-          removeOption('lunch-dropdown','raquet')
-          removeOption('dinner-dropdown','raquet')
-          document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
-          document.getElementById('menu-info').style.display = 'flex'
+          breakfastMenu = sortRawData(fetchedCornerData,0)
+        }
+  
+  
+        let meal = createMeal(breakfastMenu,userProtein/3,userCalorie/3,false,userVeggies)
+  
+  
+        let ul = document.getElementById('breakfast-menu');
+        for (let key in meal) {
+            let li = document.createElement('li');
+            li.textContent = key;
+            ul.appendChild(li);
+        }
+        document.getElementById('breakfast-output').style.display = 'flex'
+        document.getElementById('breakfast-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
+        document.getElementById('breakfast-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
+  
+  
+        
+        
+      });  
+      document.getElementById('lunch-submit').addEventListener('click', function() {
+        let meal = {}
+        var lunchOption = document.getElementById('lunch-dropdown').value;
+        document.getElementById('lunch-location').innerHTML = locations[lunchOption]
+        document.getElementById('lunch-location').style.display = 'flex'
+        document.getElementById('lunch-select').style.display = 'none'
+        if(lunchOption==='corner'){
+          lunchMenu = sortRawData(fetchedCornerData,1)
+          meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
           
         }
-      }
-      catch(error){
-        removeOption('lunch-dropdown','raquet')
-        removeOption('dinner-dropdown','raquet')
-        document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
-        document.getElementById('menu-info').style.display = 'flex'
-      }
-      document.querySelectorAll('.load-container').forEach(element => {
-        element.style.display = 'none';
-    });
-  }
-    
-    document.querySelectorAll('.dining-select').forEach(element => {
-        element.style.display = 'inline';
-    });
-    var breakfastMenu = {}
-    var lunchMenu = {}
-    var dinnerMenu = {}
-    let locations = {
-      'corner': 'Gator Corner:',
-      'broward': 'Broward Dining:',
-      'raquet': 'Raquet Club:'
+        else if(lunchOption==='broward'){
+          lunchMenu = sortRawData(fetchedBrowardData,1)
+          meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
+        }
+        else{
+          lunchMenu = sortRawData(fetchedRaquetData,0)
+          meal = createRaquetMeal(lunchMenu,userProtein/3,userCalorie/3)
+        }
+  
+  
+        let ul = document.getElementById('lunch-menu');
+        for (let key in meal) {
+            let li = document.createElement('li');
+            li.textContent = key;
+            ul.appendChild(li);
+        }
+        document.getElementById('lunch-output').style.display = 'flex'
+        document.getElementById('lunch-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
+        document.getElementById('lunch-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
+  
+      });
+      
+      document.getElementById('dinner-submit').addEventListener('click', function() {
+        let meal = {}
+        var dinnerOption = document.getElementById('dinner-dropdown').value;
+        document.getElementById('dinner-location').innerHTML = locations[dinnerOption]
+        document.getElementById('dinner-location').style.display = 'flex'
+        document.getElementById('dinner-select').style.display = 'none'
+        if(dinnerOption==='corner'){
+          dinnerMenu = sortRawData(fetchedCornerData,2)
+          meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
+          
+        }
+        else if(dinnerOption==='broward'){
+         
+          dinnerMenu = sortRawData(fetchedBrowardData,2)
+          meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
+        }
+        else{
+          dinnerMenu = sortRawData(fetchedRaquetData,0)
+          meal = createRaquetMeal(dinnerMenu,userProtein/3,userCalorie/3)
+        }
+  
+  
+        let ul = document.getElementById('dinner-menu');
+        for (let key in meal) {
+            let li = document.createElement('li');
+            li.textContent = key;
+            ul.appendChild(li);
+        }
+        document.getElementById('dinner-output').style.display = 'flex'
+        document.getElementById('dinner-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
+        document.getElementById('dinner-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
+  
+      });
+  
+      
+  
+  
+      
+  
+    } catch (error) {
+      console.log(error);
+      errortext.innerHTML = 'Application Error:'+error.message 
     }
-
-
-    document.getElementById('breakfast-submit').addEventListener('click', function() {
-      var breakfastOption = document.getElementById('breakfast-dropdown').value;
-      document.getElementById('breakfast-location').innerHTML = locations[breakfastOption]
-      document.getElementById('breakfast-location').style.display = 'flex'
-      document.getElementById('breakfast-select').style.display = 'none'
-      if(breakfastOption==='broward'){
-        breakfastMenu = sortRawData(fetchedBrowardData,0)
-      }
-      else{
-        breakfastMenu = sortRawData(fetchedCornerData,0)
-      }
-
-
-      let meal = createMeal(breakfastMenu,userProtein/3,userCalorie/3,false,userVeggies)
-
-
-      let ul = document.getElementById('breakfast-menu');
-      for (let key in meal) {
-          let li = document.createElement('li');
-          li.textContent = key;
-          ul.appendChild(li);
-      }
-      document.getElementById('breakfast-output').style.display = 'flex'
-      document.getElementById('breakfast-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
-      document.getElementById('breakfast-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
-
-
-      
-      
-    });  
-    document.getElementById('lunch-submit').addEventListener('click', function() {
-      let meal = {}
-      var lunchOption = document.getElementById('lunch-dropdown').value;
-      document.getElementById('lunch-location').innerHTML = locations[lunchOption]
-      document.getElementById('lunch-location').style.display = 'flex'
-      document.getElementById('lunch-select').style.display = 'none'
-      if(lunchOption==='corner'){
-        lunchMenu = sortRawData(fetchedCornerData,1)
-        meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
-        
-      }
-      else if(lunchOption==='broward'){
-        lunchMenu = sortRawData(fetchedBrowardData,1)
-        meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
-      }
-      else{
-        lunchMenu = sortRawData(fetchedRaquetData,0)
-        meal = createRaquetMeal(lunchMenu,userProtein/3,userCalorie/3)
-      }
-
-
-      let ul = document.getElementById('lunch-menu');
-      for (let key in meal) {
-          let li = document.createElement('li');
-          li.textContent = key;
-          ul.appendChild(li);
-      }
-      document.getElementById('lunch-output').style.display = 'flex'
-      document.getElementById('lunch-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
-      document.getElementById('lunch-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
-
-    });
-    
-    document.getElementById('dinner-submit').addEventListener('click', function() {
-      let meal = {}
-      var dinnerOption = document.getElementById('dinner-dropdown').value;
-      document.getElementById('dinner-location').innerHTML = locations[dinnerOption]
-      document.getElementById('dinner-location').style.display = 'flex'
-      document.getElementById('dinner-select').style.display = 'none'
-      if(dinnerOption==='corner'){
-        dinnerMenu = sortRawData(fetchedCornerData,2)
-        meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
-        
-      }
-      else if(dinnerOption==='broward'){
-       
-        dinnerMenu = sortRawData(fetchedBrowardData,2)
-        meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
-      }
-      else{
-        dinnerMenu = sortRawData(fetchedRaquetData,0)
-        meal = createRaquetMeal(dinnerMenu,userProtein/3,userCalorie/3)
-      }
-
-
-      let ul = document.getElementById('dinner-menu');
-      for (let key in meal) {
-          let li = document.createElement('li');
-          li.textContent = key;
-          ul.appendChild(li);
-      }
-      document.getElementById('dinner-output').style.display = 'flex'
-      document.getElementById('dinner-c').innerHTML = 'Calories: '+calculateTotals(meal).totalCalories
-      document.getElementById('dinner-p').innerHTML = 'Protein: '+calculateTotals(meal).totalProtein
-
-    });
-
-    
-
-
-    
-
-  } catch (error) {
-    console.log(error);
-    errortext.innerHTML = 'Application Error:'+error.message 
   }
+
+
+
+  
 }
 
 

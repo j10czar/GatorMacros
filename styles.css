@@ -426,6 +426,7 @@ hr{
 
   .load-container{
     z-index: -1;
+    display: none;
   }
 
   #copyright{
