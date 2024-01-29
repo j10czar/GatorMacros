@@ -576,7 +576,7 @@ async function gatorMacros(){
             document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
             document.getElementById('menu-info').style.display = 'flex'
           }
-          if(getFromLocalStorage('raquet-data')!=null && getFromLocalStorage('raquet-data')!=undefined && sortRawData(getFromLocalStorage('raquet-data'),0).length>0){
+          if(getFromLocalStorage('raquet-data')!=null && getFromLocalStorage('raquet-data')!=undefined && Object.keys(sortRawData(getFromLocalStorage('raquet-data'),0)).length>0){
             fetchedRaquetData = getFromLocalStorage('raquet-data')
   
           }
@@ -616,7 +616,8 @@ async function gatorMacros(){
         }
         try{
           let tempRaquet = await fetchRaquetData();
-          if(sortRawData(tempRaquet,0).length>0){
+          console.log(sortRawData(tempRaquet,0))
+          if(Object.keys(sortRawData(tempRaquet,0)).length>0){
             fetchedRaquetData = tempRaquet
             saveToLocalStorage('raquet-data', fetchedRaquetData)
           }
