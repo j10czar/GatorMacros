@@ -5,7 +5,7 @@ let meal = 'dinner'
   let user_protein = 0
   var user_data = {}
 const errortext = document.getElementById('errortext')
-
+let closedpoints = 0
 
 
 
@@ -550,6 +550,7 @@ async function gatorMacros(){
     userVeggies = user_data.veggies
     try {
 
+
       let fetchedCornerData;
       let fetchedBrowardData;
       let fetchedRaquetData;
@@ -567,6 +568,7 @@ async function gatorMacros(){
             removeOption('dinner-dropdown','corner')
             document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
             document.getElementById('menu-info').style.display = 'flex'
+            closedpoints+=1
           }
           if(getFromLocalStorage('broward-data')!=null && getFromLocalStorage('broward-data')!=undefined){
             fetchedBrowardData = getFromLocalStorage('broward-data')
@@ -577,6 +579,7 @@ async function gatorMacros(){
             removeOption('dinner-dropdown','broward')
             document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
             document.getElementById('menu-info').style.display = 'flex'
+            closedpoints+=1 
           }
           if(getFromLocalStorage('raquet-data')!=null && getFromLocalStorage('raquet-data')!=undefined && Object.keys(sortRawData(getFromLocalStorage('raquet-data'),0)).length>0){
             fetchedRaquetData = getFromLocalStorage('raquet-data')
@@ -587,6 +590,14 @@ async function gatorMacros(){
             removeOption('dinner-dropdown','raquet')
             document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
             document.getElementById('menu-info').style.display = 'flex'
+            closedpoints+=1 
+          }
+
+          if(closedpoints===3){
+            document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+            document.getElementById('warning-modal-container').style.display = 'flex'
+            document.getElementById('warning-box').style.display = 'flex'
           }
           
           
@@ -596,10 +607,28 @@ async function gatorMacros(){
 
         saveToLocalStorage('incomplete-load',true)
         saveToLocalStorage('date-fetched',getTodayDate())
+
+        
       
         try{
           fetchedCornerData = await fetchCornerData();
-          saveToLocalStorage('corner-data', fetchedCornerData)
+          if(fetchedCornerData[0][0]['items'].length===0){
+            removeOption('breakfast-dropdown','corner')
+            removeOption('lunch-dropdown','corner')
+            removeOption('dinner-dropdown','corner')
+            document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+            closedpoints+=1
+            if(closedpoints===3){
+              document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
+              document.getElementById('menu-info').style.display = 'flex'
+              document.getElementById('warning-modal-container').style.display = 'flex'
+              document.getElementById('warning-box').style.display = 'flex'
+            }
+          }
+          else{
+            saveToLocalStorage('corner-data', fetchedCornerData)
+          }
         }catch(error){
           removeOption('breakfast-dropdown','corner')
           removeOption('lunch-dropdown','corner')
@@ -609,7 +638,23 @@ async function gatorMacros(){
         }
         try{
           fetchedBrowardData = await fetchBrowardData();
-          saveToLocalStorage('broward-data', fetchedBrowardData)
+          if(fetchedBrowardData[0][0]['items'].length===0){
+            removeOption('breakfast-dropdown','broward')
+            removeOption('lunch-dropdown','broward')
+            removeOption('dinner-dropdown','broward')
+            document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+            closedpoints+=1
+            if(closedpoints===3){
+              document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
+              document.getElementById('menu-info').style.display = 'flex'
+              document.getElementById('warning-modal-container').style.display = 'flex'
+              document.getElementById('warning-box').style.display = 'flex'
+            }
+          }
+          else{
+            saveToLocalStorage('broward-data', fetchedBrowardData)
+          }
         }catch(error){
           removeOption('breakfast-dropdown','broward')
           removeOption('lunch-dropdown','broward')
@@ -625,10 +670,19 @@ async function gatorMacros(){
             saveToLocalStorage('raquet-data', fetchedRaquetData)
           }
           else{
+            
             removeOption('lunch-dropdown','raquet')
             removeOption('dinner-dropdown','raquet')
             document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
             document.getElementById('menu-info').style.display = 'flex'
+            closedpoints+=1
+            if(closedpoints===3){
+              document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
+              document.getElementById('menu-info').style.display = 'flex'
+              document.getElementById('warning-modal-container').style.display = 'flex'
+              document.getElementById('warning-box').style.display = 'flex'
+            }
+            
             
           }
         }
@@ -654,7 +708,7 @@ async function gatorMacros(){
         'broward': 'Broward Dining:',
         'raquet': 'Raquet Club:'
       }
-  
+      
   
       document.getElementById('breakfast-submit').addEventListener('click', function() {
         var breakfastOption = document.getElementById('breakfast-dropdown').value;
