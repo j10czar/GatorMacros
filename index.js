@@ -36,11 +36,13 @@ function getFromLocalStorage(key) {
 
 
 
+//these IDS are constantly shifting for some odd reason
+//thanks florida fresh dining!!!!!
 
 //gator corner id: 62a8c2b8a9f13a0de3af64c4
-//breakfast: 659adab6c625af072a83c89a
-//lunch: 659adab6c625af072a83c8a7
-//dinner: 659adab6c625af072a83c8b4
+//breakfast: 6678029fe45d430608bedeb7
+//lunch: 6678029fe45d430608bedea6
+//dinner: 6678029fe45d430608bedeb3
 //--------
 //broward id: 62b9907ab63f1e08defdd0bb
 //breakfast: 6592d781e45d4306eff8ccd0
@@ -52,10 +54,9 @@ function getFromLocalStorage(key) {
 
 async function fetchCornerData() {
   try {
-    const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/659adab6c625af072a83c8b4?platform=0&date='+getTodayDate());
-    const lunchResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/659adab6c625af072a83c8a7?platform=0&date='+getTodayDate());
-    const breakfastResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/659adab6c625af072a83c89a?platform=0&date='+getTodayDate());
-
+    const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/6678029fe45d430608bedeb3?platform=0&date='+getTodayDate());
+    const lunchResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/6678029fe45d430608bedea6?platform=0&date='+getTodayDate());
+    const breakfastResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/6678029fe45d430608bedeb7?platform=0&date='+getTodayDate());
     const dinnerJSON = await dinnerResponse.json();
     const lunchJSON = await lunchResponse.json();
     const breakfastJSON = await breakfastResponse.json();
@@ -63,49 +64,38 @@ async function fetchCornerData() {
     const lunchData = lunchJSON['menu']['periods']['categories'];
     const breakfastData = breakfastJSON['menu']['periods']['categories'];
     const menuData = [breakfastData,lunchData,dinnerData]
+    console.log(menuData)
     return menuData;
   } catch (error) {
+    console.log(error)
     throw new Error(error);
+   
   }
 }
 
 
 
 
+//they changed the API :(
 
+// async function fetchBrowardData() {
+//   try {
+//     const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccd7?platform=0&date='+getTodayDate());
+//     const lunchResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccde?platform=0&date='+getTodayDate());
+//     const breakfastResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccd0?platform=0&date='+getTodayDate());
 
-async function fetchBrowardData() {
-  try {
-    const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccd7?platform=0&date='+getTodayDate());
-    const lunchResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccde?platform=0&date='+getTodayDate());
-    const breakfastResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccd0?platform=0&date='+getTodayDate());
-
-    const dinnerJSON = await dinnerResponse.json();
-    const lunchJSON = await lunchResponse.json();
-    const breakfastJSON = await breakfastResponse.json();
-    const dinnerData = dinnerJSON['menu']['periods']['categories'];
-    const lunchData = lunchJSON['menu']['periods']['categories'];
-    const breakfastData = breakfastJSON['menu']['periods']['categories'];
-    const menuData = [breakfastData,lunchData,dinnerData]
-    return menuData;
-  } catch (error) {
-    throw new Error(error);
-  }
-}
-
-async function fetchRaquetData() {
-  try {
-    const raquetResponse = await fetch('https://api.dineoncampus.com/v1/location/64ccfa71c625af067ed9fd67/periods?platform=0&date='+getTodayDate());
-
-    const raquetJSON = await raquetResponse.json();
-    const raquetData = raquetJSON['menu']['periods']['categories'];
-    const menuData = [raquetData]
-    return menuData;
-  } catch (error) {
-    throw new Error(error);
-  }
-}
-
+//     const dinnerJSON = await dinnerResponse.json();
+//     const lunchJSON = await lunchResponse.json();
+//     const breakfastJSON = await breakfastResponse.json();
+//     const dinnerData = dinnerJSON['menu']['periods']['categories'];
+//     const lunchData = lunchJSON['menu']['periods']['categories'];
+//     const breakfastData = breakfastJSON['menu']['periods']['categories'];
+//     const menuData = [breakfastData,lunchData,dinnerData]
+//     return menuData;
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// }
 
 
 
@@ -156,12 +146,12 @@ function sortRawData(menuData,v){
 async function viewMenuData() {
   try {
     const fetchedCornerData = await fetchCornerData();
-    const fetchedBrowardData = await fetchBrowardData();
-    const fetchedRaquetData = await fetchRaquetData();
+    // const fetchedBrowardData = await fetchBrowardData();
+    // const fetchedRaquetData = await fetchRaquetData();
     console.log(fetchedCornerData)
-    console.log(sortRawData(fetchedBrowardData,1))
-    console.log(fetchedRaquetData)
-    console.log(sortRawData(fetchedRaquetData,0))
+    // console.log(sortRawData(fetchedBrowardData,1))
+    // console.log(fetchedRaquetData)
+    // console.log(sortRawData(fetchedRaquetData,0))
 
   } catch (error) {
     console.log(error);
@@ -364,60 +354,6 @@ function createMeal(menu, proteinGoal, calorieGoal, isRegen, isVeggie) {
 }
 
 
-function createRaquetMeal(menu, proteinGoal, calorieGoal) {
-
-  let userScoreGoal = calorieGoal+25*proteinGoal
-  let meal = {}
-
-  const desserts = ["Chocolate Chip Cookie","Cinnamon Churros","Cinnamon Roll","Cinnamon and Sugar Donut","Strawberry Shortcake Biscuit",]
-  let menuArray = Object.entries(menu).map(([item, values]) => ({
-    item, 
-    calories: values.calories, 
-    protein: values.protein, 
-    score: values.score
-  }))
-
-  let dessertArray = []
-  let entreeArray = []
-
-  for(let i=0; i<menuArray.length;i++){
-    if(desserts.includes(menuArray[i].item)){
-      dessertArray.push(menuArray[i])
-    }
-    else{
-      entreeArray.push(menuArray[i])
-    }
-  }
-
-  entreeArray.sort((a, b) => b.score - a.score)
-  dessertArray.sort((a, b) => b.score - a.score)
-
-
-  for(let i = 0; i<entreeArray.length;i++){
-    if(entreeArray[i].score<=userScoreGoal){
-      for(let j = 0; j<dessertArray.length;j++){
-        if(entreeArray[i].score+dessertArray[j].score<=userScoreGoal){
-          meal[entreeArray[i].item] = {
-            calories: entreeArray[i].calories,
-            protein: entreeArray[i].protein
-          }
-          meal[dessertArray[j].item] = {
-            calories: dessertArray[j].calories,
-            protein: dessertArray[j].protein
-          }
-          return meal
-        }
-      } 
-
-    }
-  }
-
-
-
-  
-  
-}
-
 function calculateTotals(meal) {
   let totalProtein = 0;
   let totalCalories = 0;
@@ -529,6 +465,8 @@ function removeOption(id,option){
 //------------ Define Functions Above this line-----------
 
 
+
+//once broward opens change all closedpoints to 2
     
 
 async function gatorMacros(){
@@ -552,13 +490,23 @@ async function gatorMacros(){
 
 
       let fetchedCornerData;
-      let fetchedBrowardData;
-      let fetchedRaquetData;
+      // let fetchedBrowardData;
   
       if(getFromLocalStorage('date-fetched')===getTodayDate() && !getFromLocalStorage('incomplete-load')){
+       
         document.querySelectorAll('.load-container').forEach(element => {
           element.style.display = 'none';
         });
+
+        //automaticaly remove broward bc it is not currently open lol
+        //remove this once it is open
+        removeOption('breakfast-dropdown','broward')
+        removeOption('lunch-dropdown','broward')
+        removeOption('dinner-dropdown','broward')
+        document.getElementById('menu-info').innerHTML = 'Broward Dining is closed indefinitely.'
+        document.getElementById('menu-info').style.display = 'flex'
+
+        
           if(getFromLocalStorage('corner-data')!=null && getFromLocalStorage('corner-data')!=undefined){
             fetchedCornerData = getFromLocalStorage('corner-data')
           }
@@ -570,30 +518,19 @@ async function gatorMacros(){
             document.getElementById('menu-info').style.display = 'flex'
             closedpoints+=1
           }
-          if(getFromLocalStorage('broward-data')!=null && getFromLocalStorage('broward-data')!=undefined){
-            fetchedBrowardData = getFromLocalStorage('broward-data')
-          }
-          else{
-            removeOption('breakfast-dropdown','broward')
-            removeOption('lunch-dropdown','broward')
-            removeOption('dinner-dropdown','broward')
-            document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
-            document.getElementById('menu-info').style.display = 'flex'
-            closedpoints+=1 
-          }
-          if(getFromLocalStorage('raquet-data')!=null && getFromLocalStorage('raquet-data')!=undefined && Object.keys(sortRawData(getFromLocalStorage('raquet-data'),0)).length>0){
-            fetchedRaquetData = getFromLocalStorage('raquet-data')
-  
-          }
-          else{
-            removeOption('lunch-dropdown','raquet')
-            removeOption('dinner-dropdown','raquet')
-            document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
-            document.getElementById('menu-info').style.display = 'flex'
-            closedpoints+=1 
-          }
+          // if(getFromLocalStorage('broward-data')!=null && getFromLocalStorage('broward-data')!=undefined){
+          //   fetchedBrowardData = getFromLocalStorage('broward-data')
+          // }
+          // else{
+          //   removeOption('breakfast-dropdown','broward')
+          //   removeOption('lunch-dropdown','broward')
+          //   removeOption('dinner-dropdown','broward')
+          //   document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+          //   document.getElementById('menu-info').style.display = 'flex'
+          //   closedpoints+=1 
+          // }
 
-          if(closedpoints===3){
+          if(closedpoints===1){
             document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
             document.getElementById('menu-info').style.display = 'flex'
             document.getElementById('warning-modal-container').style.display = 'flex'
@@ -608,18 +545,24 @@ async function gatorMacros(){
         saveToLocalStorage('incomplete-load',true)
         saveToLocalStorage('date-fetched',getTodayDate())
 
+        removeOption('breakfast-dropdown','broward')
+        removeOption('lunch-dropdown','broward')
+        removeOption('dinner-dropdown','broward')
+        document.getElementById('menu-info').innerHTML = 'Broward Dining is closed indefinitely.'
+        document.getElementById('menu-info').style.display = 'flex'
+
         
       
         try{
           fetchedCornerData = await fetchCornerData();
-          if(fetchedCornerData[0][0]['items'].length===0){
+          if (fetchedCornerData[0].every(item => item['items'].length === 0)){
             removeOption('breakfast-dropdown','corner')
             removeOption('lunch-dropdown','corner')
             removeOption('dinner-dropdown','corner')
             document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
             document.getElementById('menu-info').style.display = 'flex'
             closedpoints+=1
-            if(closedpoints===3){
+            if(closedpoints===1){
               document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
               document.getElementById('menu-info').style.display = 'flex'
               document.getElementById('warning-modal-container').style.display = 'flex'
@@ -627,74 +570,54 @@ async function gatorMacros(){
             }
           }
           else{
+            //this runs if the code was able to successfully fetch corner data
             saveToLocalStorage('corner-data', fetchedCornerData)
+            document.querySelectorAll('.load-container').forEach(element => {
+              element.style.display = 'none';
+            });
           }
         }catch(error){
           removeOption('breakfast-dropdown','corner')
           removeOption('lunch-dropdown','corner')
           removeOption('dinner-dropdown','corner')
           document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
-          document.getElementById('menu-info').style.display = 'flex'
-        }
-        try{
-          fetchedBrowardData = await fetchBrowardData();
-          if(fetchedBrowardData[0][0]['items'].length===0){
-            removeOption('breakfast-dropdown','broward')
-            removeOption('lunch-dropdown','broward')
-            removeOption('dinner-dropdown','broward')
-            document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
-            document.getElementById('menu-info').style.display = 'flex'
-            closedpoints+=1
-            if(closedpoints===3){
+          document.getElementById('menu-info').style.display = 'flex' 
+          closedpoints+=1
+            if(closedpoints===1){
               document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
               document.getElementById('menu-info').style.display = 'flex'
               document.getElementById('warning-modal-container').style.display = 'flex'
               document.getElementById('warning-box').style.display = 'flex'
             }
-          }
-          else{
-            saveToLocalStorage('broward-data', fetchedBrowardData)
-          }
-        }catch(error){
-          removeOption('breakfast-dropdown','broward')
-          removeOption('lunch-dropdown','broward')
-          removeOption('dinner-dropdown','broward')
-          document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
-          document.getElementById('menu-info').style.display = 'flex'
         }
-        try{
-          let tempRaquet = await fetchRaquetData();
-          console.log(sortRawData(tempRaquet,0))
-          if(Object.keys(sortRawData(tempRaquet,0)).length>0){
-            fetchedRaquetData = tempRaquet
-            saveToLocalStorage('raquet-data', fetchedRaquetData)
-          }
-          else{
-            
-            removeOption('lunch-dropdown','raquet')
-            removeOption('dinner-dropdown','raquet')
-            document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
-            document.getElementById('menu-info').style.display = 'flex'
-            closedpoints+=1
-            if(closedpoints===3){
-              document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
-              document.getElementById('menu-info').style.display = 'flex'
-              document.getElementById('warning-modal-container').style.display = 'flex'
-              document.getElementById('warning-box').style.display = 'flex'
-            }
-            
-            
-          }
-        }
-        catch(error){
-          removeOption('lunch-dropdown','raquet')
-          removeOption('dinner-dropdown','raquet')
-          document.getElementById('menu-info').innerHTML = 'Raquet Club is currently closed.'
-          document.getElementById('menu-info').style.display = 'flex'
-        }
-        document.querySelectorAll('.load-container').forEach(element => {
-          element.style.display = 'none';
-      });
+        // try{
+        //   fetchedBrowardData = await fetchBrowardData();
+        //   if(fetchedBrowardData[0][0]['items'].length===0){
+        //     removeOption('breakfast-dropdown','broward')
+        //     removeOption('lunch-dropdown','broward')
+        //     removeOption('dinner-dropdown','broward')
+        //     document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+        //     document.getElementById('menu-info').style.display = 'flex'
+        //     closedpoints+=1
+        //     if(closedpoints===3){
+        //       document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
+        //       document.getElementById('menu-info').style.display = 'flex'
+        //       document.getElementById('warning-modal-container').style.display = 'flex'
+        //       document.getElementById('warning-box').style.display = 'flex'
+        //     }
+        //   }
+        //   else{
+        //     saveToLocalStorage('broward-data', fetchedBrowardData)
+        //   }
+        // }catch(error){
+        //   removeOption('breakfast-dropdown','broward')
+        //   removeOption('lunch-dropdown','broward')
+        //   removeOption('dinner-dropdown','broward')
+        //   document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+        //   document.getElementById('menu-info').style.display = 'flex'
+        // }
+
+
     }
       
       document.querySelectorAll('.dining-select').forEach(element => {
@@ -706,7 +629,6 @@ async function gatorMacros(){
       let locations = {
         'corner': 'Gator Corner:',
         'broward': 'Broward Dining:',
-        'raquet': 'Raquet Club:'
       }
       
   
@@ -715,11 +637,11 @@ async function gatorMacros(){
         document.getElementById('breakfast-location').innerHTML = locations[breakfastOption]
         document.getElementById('breakfast-location').style.display = 'flex'
         document.getElementById('breakfast-select').style.display = 'none'
-        if(breakfastOption==='broward'){
-          breakfastMenu = sortRawData(fetchedBrowardData,0)
+        if(breakfastOption==='corner'){
+          breakfastMenu = sortRawData(fetchedCornerData,0)
         }
         else{
-          breakfastMenu = sortRawData(fetchedCornerData,0)
+          console.log('error this box shouldnt even be there')
         }
   
   
@@ -755,10 +677,6 @@ async function gatorMacros(){
           lunchMenu = sortRawData(fetchedBrowardData,1)
           meal = createMeal(lunchMenu,userProtein/3,userCalorie/3,false,userVeggies)
         }
-        else{
-          lunchMenu = sortRawData(fetchedRaquetData,0)
-          meal = createRaquetMeal(lunchMenu,userProtein/3,userCalorie/3)
-        }
   
   
         let ul = document.getElementById('lunch-menu');
@@ -788,10 +706,6 @@ async function gatorMacros(){
          
           dinnerMenu = sortRawData(fetchedBrowardData,2)
           meal = createMeal(dinnerMenu,userProtein/3,userCalorie/3,false,userVeggies)
-        }
-        else{
-          dinnerMenu = sortRawData(fetchedRaquetData,0)
-          meal = createRaquetMeal(dinnerMenu,userProtein/3,userCalorie/3)
         }
   
   
