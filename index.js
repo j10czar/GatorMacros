@@ -40,23 +40,34 @@ function getFromLocalStorage(key) {
 //thanks florida fresh dining!!!!!
 
 //gator corner id: 62a8c2b8a9f13a0de3af64c4
-//breakfast: 6678029fe45d430608bedeb7
-//lunch: 6678029fe45d430608bedea6
-//dinner: 6678029fe45d430608bedeb3
+//breakfast: 66ba1f59c625af05acb54b8d
+//lunch: 66ba1f59c625af05acb54ba3
+//dinner: 66ba1f59c625af05acb54b98
 //--------
 //broward id: 62b9907ab63f1e08defdd0bb
-//breakfast: 6592d781e45d4306eff8ccd0
-//lunch: 6592d781e45d4306eff8ccde
-//dinner: 6592d781e45d4306eff8ccd7
+//breakfast: 66c38e84c625af0697a4a809
+//lunch: 66c38e84c625af0697a4a814
+//dinner: 66c38e84c625af0697a4a81f
 //---------
 //raquet: 64ccfa71c625af067ed9fd67
+
+const CORNER_ID = '62a8c2b8a9f13a0de3af64c4';
+const BROWARD_ID = '62b9907ab63f1e08defdd0bb';
+
+const CORNER_BREAKFAST_ID = '66ba1f59c625af05acb54b8d';
+const CORNER_LUNCH_ID = '66ba1f59c625af05acb54ba3';
+const CORNER_DINNER_ID = '66ba1f59c625af05acb54b98';
+
+const BROWARD_BREAKFAST_ID = '66c38e84c625af0697a4a809';
+const BROWARD_LUNCH_ID = '66c38e84c625af0697a4a814';
+const BROWARD_DINNER_ID = '66c38e84c625af0697a4a81f';
 
 
 async function fetchCornerData() {
   try {
-    const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/6678029fe45d430608bedeb3?platform=0&date='+getTodayDate());
-    const lunchResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/6678029fe45d430608bedea6?platform=0&date='+getTodayDate());
-    const breakfastResponse = await fetch('https://api.dineoncampus.com/v1/location/62a8c2b8a9f13a0de3af64c4/periods/6678029fe45d430608bedeb7?platform=0&date='+getTodayDate());
+    const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/'+CORNER_ID+'/periods/'+CORNER_DINNER_ID+'?platform=0&date='+getTodayDate());
+    const lunchResponse = await fetch('https://api.dineoncampus.com/v1/location/'+CORNER_ID+'/periods/'+CORNER_LUNCH_ID+'?platform=0&date='+getTodayDate());
+    const breakfastResponse = await fetch('https://api.dineoncampus.com/v1/location/'+CORNER_ID+'/periods/'+CORNER_BREAKFAST_ID+'?platform=0&date='+getTodayDate());
     const dinnerJSON = await dinnerResponse.json();
     const lunchJSON = await lunchResponse.json();
     const breakfastJSON = await breakfastResponse.json();
@@ -76,26 +87,25 @@ async function fetchCornerData() {
 
 
 
-//they changed the API :(
 
-// async function fetchBrowardData() {
-//   try {
-//     const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccd7?platform=0&date='+getTodayDate());
-//     const lunchResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccde?platform=0&date='+getTodayDate());
-//     const breakfastResponse = await fetch('https://api.dineoncampus.com/v1/location/62b9907ab63f1e08defdd0bb/periods/6592d781e45d4306eff8ccd0?platform=0&date='+getTodayDate());
+async function fetchBrowardData() {
+  try {
+    const dinnerResponse = await fetch('https://api.dineoncampus.com/v1/location/'+BROWARD_ID+'/periods/'+BROWARD_DINNER_ID+'?platform=0&date='+getTodayDate());
+    const lunchResponse = await fetch('https://api.dineoncampus.com/v1/location/'+BROWARD_ID+'/periods/'+BROWARD_LUNCH_ID+'?platform=0&date='+getTodayDate());
+    const breakfastResponse = await fetch('https://api.dineoncampus.com/v1/location/'+BROWARD_ID+'/periods/'+BROWARD_BREAKFAST_ID+'?platform=0&date='+getTodayDate());
 
-//     const dinnerJSON = await dinnerResponse.json();
-//     const lunchJSON = await lunchResponse.json();
-//     const breakfastJSON = await breakfastResponse.json();
-//     const dinnerData = dinnerJSON['menu']['periods']['categories'];
-//     const lunchData = lunchJSON['menu']['periods']['categories'];
-//     const breakfastData = breakfastJSON['menu']['periods']['categories'];
-//     const menuData = [breakfastData,lunchData,dinnerData]
-//     return menuData;
-//   } catch (error) {
-//     throw new Error(error);
-//   }
-// }
+    const dinnerJSON = await dinnerResponse.json();
+    const lunchJSON = await lunchResponse.json();
+    const breakfastJSON = await breakfastResponse.json();
+    const dinnerData = dinnerJSON['menu']['periods']['categories'];
+    const lunchData = lunchJSON['menu']['periods']['categories'];
+    const breakfastData = breakfastJSON['menu']['periods']['categories'];
+    const menuData = [breakfastData,lunchData,dinnerData]
+    return menuData;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
 
 
@@ -465,8 +475,6 @@ function removeOption(id,option){
 //------------ Define Functions Above this line-----------
 
 
-
-//once broward opens change all closedpoints to 2
     
 
 async function gatorMacros(){
@@ -490,7 +498,7 @@ async function gatorMacros(){
 
 
       let fetchedCornerData;
-      // let fetchedBrowardData;
+      let fetchedBrowardData;
   
       if(getFromLocalStorage('date-fetched')===getTodayDate() && !getFromLocalStorage('incomplete-load')){
        
@@ -498,13 +506,7 @@ async function gatorMacros(){
           element.style.display = 'none';
         });
 
-        //automaticaly remove broward bc it is not currently open lol
-        //remove this once it is open
-        removeOption('breakfast-dropdown','broward')
-        removeOption('lunch-dropdown','broward')
-        removeOption('dinner-dropdown','broward')
-        document.getElementById('menu-info').innerHTML = 'Broward Dining is closed indefinitely.'
-        document.getElementById('menu-info').style.display = 'flex'
+  
 
         
           if(getFromLocalStorage('corner-data')!=null && getFromLocalStorage('corner-data')!=undefined){
@@ -518,19 +520,19 @@ async function gatorMacros(){
             document.getElementById('menu-info').style.display = 'flex'
             closedpoints+=1
           }
-          // if(getFromLocalStorage('broward-data')!=null && getFromLocalStorage('broward-data')!=undefined){
-          //   fetchedBrowardData = getFromLocalStorage('broward-data')
-          // }
-          // else{
-          //   removeOption('breakfast-dropdown','broward')
-          //   removeOption('lunch-dropdown','broward')
-          //   removeOption('dinner-dropdown','broward')
-          //   document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
-          //   document.getElementById('menu-info').style.display = 'flex'
-          //   closedpoints+=1 
-          // }
+          if(getFromLocalStorage('broward-data')!=null && getFromLocalStorage('broward-data')!=undefined){
+            fetchedBrowardData = getFromLocalStorage('broward-data')
+          }
+          else{
+            removeOption('breakfast-dropdown','broward')
+            removeOption('lunch-dropdown','broward')
+            removeOption('dinner-dropdown','broward')
+            document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+            closedpoints+=1 
+          }
 
-          if(closedpoints===1){
+          if(closedpoints===2){
             document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
             document.getElementById('menu-info').style.display = 'flex'
             document.getElementById('warning-modal-container').style.display = 'flex'
@@ -545,11 +547,6 @@ async function gatorMacros(){
         saveToLocalStorage('incomplete-load',true)
         saveToLocalStorage('date-fetched',getTodayDate())
 
-        removeOption('breakfast-dropdown','broward')
-        removeOption('lunch-dropdown','broward')
-        removeOption('dinner-dropdown','broward')
-        document.getElementById('menu-info').innerHTML = 'Broward Dining is closed indefinitely.'
-        document.getElementById('menu-info').style.display = 'flex'
 
         
       
@@ -562,7 +559,7 @@ async function gatorMacros(){
             document.getElementById('menu-info').innerHTML = 'Gator Corner is currently closed.'
             document.getElementById('menu-info').style.display = 'flex'
             closedpoints+=1
-            if(closedpoints===1){
+            if(closedpoints===2){
               document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
               document.getElementById('menu-info').style.display = 'flex'
               document.getElementById('warning-modal-container').style.display = 'flex'
@@ -572,9 +569,6 @@ async function gatorMacros(){
           else{
             //this runs if the code was able to successfully fetch corner data
             saveToLocalStorage('corner-data', fetchedCornerData)
-            document.querySelectorAll('.load-container').forEach(element => {
-              element.style.display = 'none';
-            });
           }
         }catch(error){
           removeOption('breakfast-dropdown','corner')
@@ -590,35 +584,38 @@ async function gatorMacros(){
               document.getElementById('warning-box').style.display = 'flex'
             }
         }
-        // try{
-        //   fetchedBrowardData = await fetchBrowardData();
-        //   if(fetchedBrowardData[0][0]['items'].length===0){
-        //     removeOption('breakfast-dropdown','broward')
-        //     removeOption('lunch-dropdown','broward')
-        //     removeOption('dinner-dropdown','broward')
-        //     document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
-        //     document.getElementById('menu-info').style.display = 'flex'
-        //     closedpoints+=1
-        //     if(closedpoints===3){
-        //       document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
-        //       document.getElementById('menu-info').style.display = 'flex'
-        //       document.getElementById('warning-modal-container').style.display = 'flex'
-        //       document.getElementById('warning-box').style.display = 'flex'
-        //     }
-        //   }
-        //   else{
-        //     saveToLocalStorage('broward-data', fetchedBrowardData)
-        //   }
-        // }catch(error){
-        //   removeOption('breakfast-dropdown','broward')
-        //   removeOption('lunch-dropdown','broward')
-        //   removeOption('dinner-dropdown','broward')
-        //   document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
-        //   document.getElementById('menu-info').style.display = 'flex'
-        // }
+        try{
+          fetchedBrowardData = await fetchBrowardData();
+          if(fetchedBrowardData[0][0]['items'].length===0){
+            removeOption('breakfast-dropdown','broward')
+            removeOption('lunch-dropdown','broward')
+            removeOption('dinner-dropdown','broward')
+            document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+            document.getElementById('menu-info').style.display = 'flex'
+            closedpoints+=1
+            if(closedpoints===2){
+              document.getElementById('menu-info').innerHTML = 'All dining locations closed.'
+              document.getElementById('menu-info').style.display = 'flex'
+              document.getElementById('warning-modal-container').style.display = 'flex'
+              document.getElementById('warning-box').style.display = 'flex'
+            }
+          }
+          else{
+            saveToLocalStorage('broward-data', fetchedBrowardData)
+          }
+        }catch(error){
+          removeOption('breakfast-dropdown','broward')
+          removeOption('lunch-dropdown','broward')
+          removeOption('dinner-dropdown','broward')
+          document.getElementById('menu-info').innerHTML = 'Broward Dining is currently closed.'
+          document.getElementById('menu-info').style.display = 'flex'
+        }
 
 
     }
+      document.querySelectorAll('.load-container').forEach(element => {
+        element.style.display = 'none';
+      });
       
       document.querySelectorAll('.dining-select').forEach(element => {
           element.style.display = 'inline';
@@ -639,6 +636,9 @@ async function gatorMacros(){
         document.getElementById('breakfast-select').style.display = 'none'
         if(breakfastOption==='corner'){
           breakfastMenu = sortRawData(fetchedCornerData,0)
+        }
+        else if(breakfastOption==='broward'){
+          breakfastMenu = sortRawData(fetchedBrowardData,0)
         }
         else{
           console.log('error this box shouldnt even be there')
