@@ -620,6 +620,8 @@ async function gatorMacros(){
       document.querySelectorAll('.dining-select').forEach(element => {
           element.style.display = 'inline';
       });
+
+      document.getElementById('reselect-panel').style.display = 'flex'
       var breakfastMenu = {}
       var lunchMenu = {}
       var dinnerMenu = {}
