@@ -51,16 +51,17 @@ function getFromLocalStorage(key) {
 //---------
 //raquet: 64ccfa71c625af067ed9fd67
 
+
 const CORNER_ID = '62a8c2b8a9f13a0de3af64c4';
 const BROWARD_ID = '62b9907ab63f1e08defdd0bb';
 
-const CORNER_BREAKFAST_ID = '66ba1f59c625af05acb54b8d';
-const CORNER_LUNCH_ID = '66ba1f59c625af05acb54ba3';
-const CORNER_DINNER_ID = '66ba1f59c625af05acb54b98';
+const CORNER_BREAKFAST_ID = '67829284c625af073a7614f1';
+const CORNER_LUNCH_ID = '67829284c625af073a761509';
+const CORNER_DINNER_ID = '67829284c625af073a7614fd';
 
-const BROWARD_BREAKFAST_ID = '66c38e84c625af0697a4a809';
-const BROWARD_LUNCH_ID = '66c38e84c625af0697a4a814';
-const BROWARD_DINNER_ID = '66c38e84c625af0697a4a81f';
+const BROWARD_BREAKFAST_ID ='678267d2351d530540da45b0';
+const BROWARD_LUNCH_ID = '678267d2351d530540da459e';
+const BROWARD_DINNER_ID = '678267d2351d530540da45ab';
 
 
 async function fetchCornerData() {
